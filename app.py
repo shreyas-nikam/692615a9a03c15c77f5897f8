@@ -1,16 +1,75 @@
-
 import streamlit as st
 
-st.set_page_config(page_title="QuCreate Streamlit Lab", layout="wide")
-st.sidebar.image("assets/images/company_logo.jpg")
+st.set_page_config(page_title="QuLab", layout="wide")
+st.sidebar.image("https://www.quantuniversity.com/assets/img/logo5.jpg")
 st.sidebar.divider()
-st.title("QuCreate Streamlit Lab")
+st.title("QuLab: AI Risk and Assurance Lab")
 st.divider()
 
-# Code goes here
+st.markdown("""
+In this lab, you will explore the multifaceted world of AI risks, with a particular focus on Generative AI and Agentic AI systems. This interactive sandbox is designed for Risk Managers to:
 
-st.divider()
-st.write("© 2025 QuantUniversity. All Rights Reserved.")
-st.caption("The purpose of this demonstration is solely for educational use and illustration. Any reproduction of this demonstration requires prior written consent from QuantUniversity.")
-st.caption("This lab was generated using the QuCreate platform. QuCreate relies on AI models for generating code, "
-           "which may contain inaccuracies or errors.")
+*   **Understand AI Risk Categories:** Delve into various risk dimensions, including data, model, system, human-centric, and organizational risks.
+*   **Quantify Risk:** Learn to quantify risk likelihood, qualitative and monetary impact, and the financial cost of potential failures.
+*   **Experiment with Mitigations:** Propose and simulate the effects of different mitigation strategies on risk reduction.
+*   **Visualize Impact:** Observe the reduction of risk both before and after applying mitigations through interactive plots.
+*   **Identify Residual Risks:** Understand how to identify remaining risks and anticipate new challenges introduced by mitigation efforts.
+*   **Grasp Key Concepts:** Gain practical insights into critical AI risk concepts such as `hallucinations`, `goal mis-specification`, `autonomy creep`, `error propagation`, `human-in-the-loop`, and `oversight mechanisms`.
+
+Navigate through the sections using the sidebar to explore each aspect of AI risk management.
+"""))
+
+page = st.sidebar.selectbox(
+    label="Navigation", 
+    options=[
+        "1. Introduction", 
+        "2. AI Risk Taxonomy", 
+        "3. Defining Key Risk Metrics", 
+        "4. Scenario Selection", 
+        "5. Identifying Baseline Risks", 
+        "6. Visualizing Baseline Risk Profile", 
+        "7. Proposing Mitigation Strategies", 
+        "8. Simulating Mitigation Outcomes", 
+        "9. Comparative Risk Visualization", 
+        "10. Updated Risk Matrix", 
+        "11. Remaining Risks & New Challenges", 
+        "12. Reset Scenario"
+    ]
+)
+
+if page == "1. Introduction":
+    from application_pages.page_1_introduction import main
+    main()
+elif page == "2. AI Risk Taxonomy":
+    from application_pages.page_2_risk_taxonomy import main
+    main()
+elif page == "3. Defining Key Risk Metrics":
+    from application_pages.page_3_risk_metrics import main
+    main()
+elif page == "4. Scenario Selection":
+    from application_pages.page_4_scenario_selection import main
+    main()
+elif page == "5. Identifying Baseline Risks":
+    from application_pages.page_5_baseline_risks import main
+    main()
+elif page == "6. Visualizing Baseline Risk Profile":
+    from application_pages.page_6_visualizing_baseline import main
+    main()
+elif page == "7. Proposing Mitigation Strategies":
+    from application_pages.page_7_proposing_mitigations import main
+    main()
+elif page == "8. Simulating Mitigation Outcomes":
+    from application_pages.page_8_simulating_outcomes import main
+    main()
+elif page == "9. Comparative Risk Visualization":
+    from application_pages.page_9_comparative_visualization import main
+    main()
+elif page == "10. Updated Risk Matrix":
+    from application_pages.page_10_updated_risk_matrix import main
+    main()
+elif page == "11. Remaining Risks & New Challenges":
+    from application_pages.page_11_remaining_risks import main
+    main()
+elif page == "12. Reset Scenario":
+    from application_pages.page_12_reset_scenario import main
+    main()
