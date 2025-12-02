@@ -49,4 +49,4 @@ def main():
             st.warning("No baseline risks found for the selected scenario.")
             st.session_state.baseline_risks_df = pd.DataFrame() # Ensure it's an empty DataFrame
     else:
-        st.info("Please select a scenario in the '4. Scenario Selection' page to view baseline risks.")
+        st.info("Please select a scenario in the 
