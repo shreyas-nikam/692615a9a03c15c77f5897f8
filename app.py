@@ -1,1 +1,51 @@
-# Starter Python file
+
+import streamlit as st
+
+st.set_page_config(page_title="QuLab", layout="wide")
+st.sidebar.image("https://www.quantuniversity.com/assets/img/logo5.jpg")
+st.sidebar.divider()
+st.title("QuLab")
+st.divider()
+
+st.markdown("""
+In this lab, we will explore the critical intersection of traditional Model Risk Management (MRM) frameworks,
+specifically SR 11-7, and modern AI Risk Management Frameworks, such as the NIST AI RMF 1.0.
+We aim to provide a comprehensive understanding for Risk Managers on how to evolve from conventional MRM
+to a holistic approach for AI assurance, especially in the context of advanced AI systems like Large Language Models (LLMs) and agentic architectures.
+We will highlight the key differences, shared objectives, and practical integration points to build robust AI governance.
+""")
+
+page = st.sidebar.selectbox(
+    label="Navigation",
+    options=[
+        "Home/Introduction",
+        "The Imperative of AI Risk Management",
+        "Foundations of SR 11-7",
+        "Introduction to NIST AI RMF",
+        "Framework Comparison & Interactive Mapping",
+        "Framework Application to Generative & Agentic AI",
+        "Essential AI Assurance Artifacts"
+    ]
+)
+
+if page == "Home/Introduction":
+    from application_pages.page_1_introduction import main
+    main()
+elif page == "The Imperative of AI Risk Management":
+    from application_pages.page_2_ai_risk_management import main
+    main()
+elif page == "Foundations of SR 11-7":
+    from application_pages.page_3_foundations_sr117 import main
+    main()
+elif page == "Introduction to NIST AI RMF":
+    from application_pages.page_4_nist_ai_rmf import main
+    main()
+elif page == "Framework Comparison & Interactive Mapping":
+    from application_pages.page_5_framework_comparison_mapping import main
+    main()
+elif page == "Framework Application to Generative & Agentic AI":
+    from application_pages.page_6_generative_agentic_ai import main
+    main()
+elif page == "Essential AI Assurance Artifacts":
+    from application_pages.page_7_assurance_artifacts import main
+    main()
