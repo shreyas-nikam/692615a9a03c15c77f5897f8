@@ -65,7 +65,7 @@ def main():
     st.dataframe(create_nist_ai_rmf_validity_reliability_safety_attributes_table())
 
     st.markdown("### Trustworthy AI Attributes: Security, Transparency, Fairness")
-    st.dataframe(create_nist_rmf_security_transparency_fairness_attributes_table())
+    st.dataframe(create_nist_ai_rmf_security_transparency_fairness_attributes_table())
 
     st.markdown("### Trustworthy AI Attributes: Accountability & Privacy-Preserving")
     st.dataframe(create_nist_ai_rmf_accountability_privacy_attributes_table())

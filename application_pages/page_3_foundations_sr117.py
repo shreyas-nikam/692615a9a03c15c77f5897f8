@@ -67,4 +67,5 @@ def main():
     st.dataframe(create_sr117_modern_frameworks_comparison_table())
 
     st.markdown("""
-    In essence, while SR 11-7 provides a robust foundation, AI
+    In essence, while SR 11-7 provides a robust foundation, AI and machine learning systems introduce new complexities and risks that require adaptation and extension of traditional model risk management practices. Modern frameworks, such as the NIST AI Risk Management Framework, build upon SR 11-7 by broadening the definition of models, introducing more granular risk tiering, and emphasizing continuous validation and monitoring. Organizations should leverage the foundational principles of SR 11-7 while evolving their practices to address the unique challenges posed by AI systems.
+    """)
