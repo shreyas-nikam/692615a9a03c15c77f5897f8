@@ -1,519 +1,626 @@
 
-# Technical Specification for Jupyter Notebook: AI Framework Comparator
+# Technical Specification for Jupyter Notebook: AI Framework Comparator: SR 11-7 vs. NIST AI RMF
 
 ## 1. Notebook Overview
 
-### Learning Goals
-This notebook is designed to provide a comprehensive understanding of the relationship and complementary nature of SR 11-7 and the NIST AI RMF 1.0. Upon completion, users will be able to:
-*   **Differentiate** between the scope and applicability of SR 11-7 and NIST AI RMF.
-*   **Identify** shared objectives between the two frameworks in enhancing trustworthiness and governance.
-*   **Understand** how SR 11-7's Model Risk Management (MRM) pillars (Development/Implementation, Validation, Governance, Ongoing Monitoring) map to NIST AI RMF's functions (Govern, Map, Measure, Manage).
-*   **Recognize** the unique attributes of trustworthy AI introduced by NIST AI RMF (e.g., validity, fairness, transparency, accountability).
-*   **Introduce and explain** the core principles and pillars of SR 11-7.
-*   **Detail** the functions (Govern, Map, Measure, Manage) and trustworthiness attributes of NIST AI RMF.
-*   **Provide** a clear comparative analysis of both frameworks, focusing on differences, shared objectives, and integration points.
-*   **Include conceptual discussions** on emerging AI risks such as hallucinations and autonomy creep.
-*   **Define** key terminology from both SR 11-7 and NIST AI RMF clearly.
-*   **Conceptually discuss** how quantitative aspects like performance metrics ($Accuracy$, $F1-Score$) relate to risk quantification within the 'Measure' function of NIST AI RMF.
-*   **Explain** the purpose and key components of essential AI assurance artifacts: Model Cards, Data Cards, and Risk Registers.
+*   **Learning Goals:**
+    *   Differentiate between the scope and applicability of SR 11-7 and the NIST AI RMF 1.0.
+    *   Identify shared objectives between SR 11-7 and NIST AI RMF in enhancing trustworthiness and governance of AI.
+    *   Understand how SR 11-7's Model Risk Management (MRM) pillars (Development/Implementation, Validation, Governance, Ongoing Monitoring) map to NIST AI RMF's functions (Govern, Map, Measure, Manage).
+    *   Recognize the unique attributes of trustworthy AI introduced by NIST AI RMF, such as validity, reliability, safety, security, transparency, fairness, accountability, and privacy-preserving.
+    *   Introduce and explain the core principles and pillars of SR 11-7, including "Effective Challenge" and Model Risk Governance.
+    *   Detail the functions and trustworthiness attributes of NIST AI RMF.
+    *   Provide a clear comparative analysis of both frameworks, focusing on their differences, shared objectives, and practical integration points.
+    *   Include conceptual discussions on emerging AI risks such as hallucinations, goal mis-specification, and autonomy creep.
+    *   Understand AI risk categorization across five key dimensions: Data, Model, System, Human, and Organizational.
+    *   Learn about essential AI assurance artifacts: Model Cards, Data Cards, and Risk Registers, and how they facilitate effective challenge and audit.
 
-### Target Audience
-This notebook is specifically targeted at **Risk Managers** who need to understand the evolution from traditional model risk management to comprehensive AI assurance, highlighting key differences, shared objectives, and practical integration points for AI governance.
+*   **Target Audience:** Risk Managers, particularly those involved in model risk management, aiming to understand the transition and integration from traditional financial model risk management to comprehensive AI assurance.
 
 ## 2. Code Requirements
 
-### List of Expected Libraries
-*   `pandas`: For creating and displaying structured tabular data (DataFrames) for comparisons and artifact representations.
-*   `IPython.display`: For rendering Markdown within code cells and enhancing the display of DataFrames.
+*   **Expected Libraries:**
+    *   `pandas`: For creating and displaying structured tabular data (e.g., comparison tables, artifact examples).
+    *   `IPython.display`: For displaying rich Markdown content from within code cells and for clarity when constructing complex multi-line markdown tables or diagrams programmatically.
 
-### List of Algorithms or functions to be implemented
-No complex AI/ML algorithms or models will be implemented as this notebook focuses on conceptual comparison and explanation of regulatory frameworks. Functions will primarily involve data structuring and presentation.
+*   **Algorithms or Functions to be Implemented:** (Conceptual descriptions, no actual algorithms for data processing)
+    *   `display_markdown_text(text)`: A utility function to display rich Markdown text within a code cell, enhancing readability for conceptual sections.
+    *   `create_sr117_pillars_table()`: A function that generates a pandas DataFrame detailing the core pillars of SR 11-7 and their brief descriptions.
+    *   `create_sr117_modern_frameworks_comparison_table()`: A function that generates a pandas DataFrame comparing SR 11-7 views with modern AI frameworks (e.g., NIST AI RMF) across aspects like model definition, tiering, risk management, and validation.
+    *   `create_ai_risk_taxonomy_diagram_text()`: A function that generates a textual representation (e.g., using newline characters and indentation) illustrating the five key dimensions of AI risk taxonomy.
+    *   `create_nist_ai_rmf_attributes_table()`: A function that generates a pandas DataFrame listing the key trustworthiness attributes of NIST AI RMF with brief definitions.
+    *   `create_sr117_nist_comparison_summary_table()`: A function that generates a pandas DataFrame summarizing the distinct scopes, shared objectives, and integration benefits of SR 11-7 and NIST AI RMF.
+    *   `create_sr117_to_nist_govern_mapping_table()`: A function that generates a pandas DataFrame mapping SR 11-7 MRM pillars (Governance, Development/Implementation, Validation, Ongoing Monitoring) to the NIST AI RMF "Govern" function with key aspects and best practices.
+    *   `create_sr117_to_nist_map_measure_mapping_table()`: A function that generates a pandas DataFrame mapping relevant SR 11-7 MRM pillars (Development/Implementation, Validation, Ongoing Monitoring) to NIST AI RMF "Map" and "Measure" functions with key aspects and best practices.
+    *   `create_sr117_to_nist_manage_mapping_table()`: A function that generates a pandas DataFrame mapping relevant SR 11-7 MRM pillars (Ongoing Monitoring, Validation, Development/Implementation) to the NIST AI RMF "Manage" function with key aspects and best practices.
+    *   `create_model_card_example_fields_table()`: A function that generates a pandas DataFrame illustrating example fields and components of an AI Model Card.
+    *   `create_data_card_example_fields_table()`: A function that generates a pandas DataFrame illustrating example fields and components of an AI Data Card.
+    *   `create_risk_register_example_fields_table()`: A function that generates a pandas DataFrame illustrating example fields and components of an AI Risk Register.
+    *   `present_scenario_question(question, discussion_points)`: A function that displays a scenario question and its associated discussion points in a structured format.
 
-*   `create_sr117_overview_table()`: Function to generate a `pandas.DataFrame` detailing SR 11-7 foundational concepts.
-*   `create_sr117_pillars_table()`: Function to generate a `pandas.DataFrame` outlining the SR 11-7 MRM pillars.
-*   `create_ai_risk_dimensions_list()`: Function to return a list or dictionary representing the five key dimensions of AI risk taxonomy.
-*   `create_nist_airmf_functions_table()`: Function to generate a `pandas.DataFrame` detailing the NIST AI RMF functions.
-*   `create_nist_airmf_attributes_table()`: Function to generate a `pandas.DataFrame` detailing the attributes of trustworthy AI.
-*   `create_framework_comparison_table()`: Function to generate a `pandas.DataFrame` for side-by-side comparison of SR 11-7 and NIST AI RMF.
-*   `create_sr117_nist_govern_mapping_table()`: Function to generate a `pandas.DataFrame` mapping SR 11-7 pillars to NIST AI RMF 'Govern' function.
-*   `create_sr117_nist_map_measure_mapping_table()`: Function to generate a `pandas.DataFrame` mapping SR 11-7 pillars to NIST AI RMF 'Map' and 'Measure' functions.
-*   `create_sr117_nist_manage_mapping_table()`: Function to generate a `pandas.DataFrame` mapping SR 11-7 pillars to NIST AI RMF 'Manage' function.
-*   `create_model_card_template()`: Function to return a dictionary or `pandas.DataFrame` representing a conceptual Model Card structure.
-*   `create_data_card_template()`: Function to return a dictionary or `pandas.DataFrame` representing a conceptual Data Card structure.
-*   `create_risk_register_template()`: Function to return a dictionary or `pandas.DataFrame` representing a conceptual Risk Register structure.
-*   `scenario_question_1()`: Function to present a scenario-based question and expected discussion points. (No actual implementation of a model in the scenario).
-
-### Visualization
-*   **Tables:** All tabular data will be presented using `pandas.DataFrame` objects, displayed directly in the notebook cells, or formatted as Markdown tables using `to_markdown()`. This includes:
-    *   SR 11-7 overview and pillars.
-    *   NIST AI RMF functions and trustworthiness attributes.
-    *   Detailed mappings between SR 11-7 pillars and NIST AI RMF functions.
-    *   Comparative analysis table of both frameworks.
-*   **Diagrams:**
-    *   A simple, structured text-based diagram (e.g., using bullet points, nested lists, or `IPython.display.Markdown` for structured text) will be generated to visually represent the five key dimensions of AI risk taxonomy (Data, Model, System, Human, Organizational).
-*   **Conceptual Examples:**
-    *   Structured textual representations (e.g., formatted dictionaries, bulleted lists, or `pandas.DataFrame` structures presented as Markdown tables) will be used to illustrate the key components and fields of Model Cards, Data Cards, and Risk Registers.
-
-### Dataset Details
-No direct datasets are required for the core conceptual explanation and comparison of the frameworks. Any examples of "performance metrics" mentioned in the 'Measure' function of NIST AI RMF will be conceptual or illustrative, not requiring real data processing or model training.
+*   **Visualizations:**
+    *   **Tables:**
+        *   SR 11-7 Pillars table.
+        *   Comparison table of SR 11-7 vs. Modern AI Frameworks.
+        *   NIST AI RMF Trustworthiness Attributes table.
+        *   Summary comparison table of SR 11-7 and NIST AI RMF.
+        *   Mapping tables from SR 11-7 MRM pillars to NIST AI RMF functions (Govern, Map, Measure, Manage).
+        *   Example Model Card structure (fields and purpose).
+        *   Example Data Card structure (fields and purpose).
+        *   Example Risk Register structure (fields like risk ID, description, impact, likelihood, mitigation).
+    *   **Diagrams (Conceptual/Text-based):**
+        *   Simple text-based representation or bulleted list for the five key dimensions of AI risk taxonomy (Data, Model, System, Human, Organizational).
+        *   Conceptual flow for "Module Summary" as seen in slide 36.
 
 ## 3. Notebook Sections (in detail)
 
 ---
 
-### 3.1. Introduction to AI Risk and Assurance
+### Section 1: Introduction to AI Risk and Assurance
 
 **Markdown Cell:**
-### The Evolving Landscape of AI Risk Management
+# AI Framework Comparator: SR 11-7 vs. NIST AI RMF
 
-Artificial Intelligence (AI) models, particularly complex ones like Large Language Models (LLMs), have significantly amplified traditional model risks and introduced entirely new categories of emergent risks. Understanding and managing these risks is paramount for ensuring the trustworthiness and responsible deployment of AI systems.
+## Introduction
 
-This notebook will guide **Risk Managers** through the foundational concepts of AI risk and assurance by comparing two critical frameworks: **SR 11-7** (Model Risk Management Guidance) and the **NIST AI Risk Management Framework (AI RMF 1.0)**. We will explore how traditional model risk principles evolve to address the unique challenges posed by AI, focusing on practical integration points for comprehensive AI governance.
+Welcome to this educational notebook designed for **Risk Managers**. This module clarifies the relationship and complementary nature of SR 11-7 and the NIST AI Risk Management Framework (AI RMF 1.0). Our goal is to enable a deeper understanding of the evolution from traditional model risk management to comprehensive AI assurance, highlighting key differences, shared objectives, and practical integration points for robust AI governance.
 
-### Learning Objectives for this Module:
-*   Understand the imperative for advanced AI risk management.
-*   Review the foundational principles of SR 11-7.
-*   Categorize AI risks using a multidimensional taxonomy.
-*   Explore the structure and attributes of the NIST AI RMF 1.0.
-*   Analyze the complementary nature and integration points of SR 11-7 and NIST AI RMF.
-*   Develop an understanding of essential AI assurance artifacts (Model Cards, Data Cards, Risk Registers).
+### Module Overview and Learning Objectives
 
----
+This module aims to provide a comprehensive understanding of AI risk and assurance by:
+*   **Module Scope:** Managing risks in large-scale AI systems, including Large Language Models (LLMs) and agentic architectures.
+*   **Foundational Frameworks:** Leveraging SR 11-7 and NIST AI RMF 1.0 principles.
+*   **Key Learning Outcomes:** Applying SR 11-7 and NIST AI RMF to generative/agentic AI, identifying life cycle risks (data, model, system, human, organizational), and constructing essential assurance artifacts.
+*   **Evolution of Assurance:** Tracing the transition from traditional Model Risk Management (MRM) to comprehensive AI assurance practices.
 
-### 3.2. Foundational Concepts of Model Risk Management (SR 11-7)
-
-**Markdown Cell:**
-### SR 11-7: Foundational U.S. Guidance on Model Risk
-
-SR 11-7, issued by the Federal Reserve and the Office of the Comptroller of the Currency (OCC) in 2011, provides foundational guidance for model risk management (MRM) in financial institutions. It defines **model risk** as the potential for adverse consequences from decisions based on incorrect or misused models.
-
-Key aspects of SR 11-7 include:
-*   **Model Definition**: Encompasses quantitative methods, systems, and approaches that apply statistical, financial, or economic theories to process input data into quantitative estimates.
-*   **Model Lifecycle**: Covers model development, implementation, use, and validation.
-*   **Effective Challenge**: Requires independent and objective review of models.
-*   **Governance**: Mandates clear roles, responsibilities, and oversight by boards and senior management.
-
-Let's look at the core tenets of SR 11-7.
-
-**Code Cell (Function Definition):**
+**Code Cell (Function Implementation):**
 ```python
 import pandas as pd
 from IPython.display import display, Markdown
 
-def create_sr117_overview_table():
-    """
-    Generates a DataFrame summarizing the foundational concepts of SR 11-7.
-    """
-    sr117_data = {
-        "Concept": [
-            "Definition of Model Risk",
-            "Scope",
-            "Key Principle 1",
-            "Key Principle 2",
-            "Goal"
-        ],
-        "Description": [
-            "Potential for adverse consequences (financial loss, flawed decisions) from incorrect or misused models.",
-            "Covers models used for calculating capital requirements, valuing assets, measuring risks, and other financial decisions.",
-            "**Effective Challenge**: Requires objective, informed, and independent review and testing of models.",
-            "**Strong Governance**: Mandates board and senior management oversight, clear roles, and policies.",
-            "Ensure models are accurate, reliable, and used appropriately, thereby mitigating financial and reputational risks."
-        ]
-    }
-    return pd.DataFrame(sr117_data)
+def display_markdown_text(text):
+    """Displays markdown formatted text."""
+    display(Markdown(text))
+
+# No specific function to implement for this introductory section beyond the display_markdown_text helper.
+# The content is primarily static markdown for introduction.
 ```
 
 **Code Cell (Execution):**
 ```python
-sr117_overview_df = create_sr117_overview_table()
-display(sr117_overview_df.style.set_properties(**{'text-align': 'left'}).hide(axis='index'))
+# No specific function call needed beyond the initial markdown display.
+# This cell is intentionally left empty as the introduction is primarily static text.
 ```
 
-**Markdown Cell:**
-The table above summarizes the core aspects of SR 11-7, emphasizing its focus on model accuracy, reliability, and robust governance within financial contexts.
+**Markdown Cell (Explanation for Execution):**
+This introductory section sets the stage for the notebook, outlining its purpose, target audience, and the key topics that will be covered. It emphasizes the critical need for adapting existing risk management practices to address the unique challenges posed by modern AI systems.
 
 ---
 
-### 3.3. SR 11-7 Pillars: Model Risk Management Lifecycle
+### Section 2: The Imperative of AI Risk Management
 
 **Markdown Cell:**
-SR 11-7 outlines a comprehensive Model Risk Management (MRM) framework structured around several key pillars, which encompass the entire model lifecycle from development to ongoing monitoring. These pillars ensure that models are developed, validated, and used appropriately, and that risks are continuously monitored and managed.
+## The Imperative of AI Risk Management
 
-The main pillars are:
-*   **Development, Implementation, and Use**: Focuses on the initial creation and deployment of models.
-*   **Validation**: Emphasizes independent assessment of model accuracy and performance.
-*   **Governance**: Covers oversight, policies, and roles for managing model risk.
-*   **Ongoing Monitoring**: Ensures continuous performance tracking and risk identification.
+The rapid advancement and widespread deployment of Artificial Intelligence, particularly sophisticated models like Large Language Models (LLMs), have introduced new layers of complexity and risk that amplify traditional model risks.
 
-Let's outline these pillars and their key considerations.
+### Emergent AI Risks
 
-**Code Cell (Function Definition):**
+AI's unique characteristics give rise to **emergent risks** that were not typically considered in traditional model risk management:
+*   **Hallucinations:** AI generating false or misleading information with high confidence.
+*   **Goal Mis-specification:** AI pursuing unintended objectives due to poorly defined goals.
+*   **Autonomy Creep:** AI systems operating beyond their intended scope or human oversight.
+*   **Magnified Biases:** Existing societal biases being amplified by AI models due to biased training data or algorithmic design.
+
+### Five Key Dimensions of AI Risk
+
+To systematically manage these diverse risks, AI failures are categorized across five critical dimensions:
+*   **Data Risks:** Concerns related to the quality, provenance, privacy, and bias of data used to train and operate AI models.
+*   **Model Risks:** Issues concerning algorithmic bias, accuracy, reliability, robustness, and interpretability of AI models.
+*   **System Risks:** Risks associated with the integration of AI models into larger systems, architectural challenges, and supply chain vulnerabilities.
+*   **Human Risks:** Challenges involving misuse, over-reliance, misinterpretation, and loss of human oversight of AI systems.
+*   **Organizational Risks:** Governance gaps, policy deficiencies, and cultural factors that impede responsible AI development and deployment.
+
+The potential impact of AI failures spans across financial, reputational, and operational domains, affecting various industries and demanding robust risk management frameworks.
+
+**Code Cell (Function Implementation):**
+```python
+def create_ai_risk_taxonomy_diagram_text():
+    """
+    Generates a textual representation of the five key dimensions of AI risk taxonomy.
+    """
+    taxonomy_text = """
+    AI Risk Taxonomy: A Multidimensional Approach
+
+    1.  **Data Risks:** Quality, Provenance, Privacy, Bias
+    2.  **Model Risks:** Bias, Accuracy, Reliability, Robustness, Interpretability
+    3.  **System Risks:** Integration, Architecture, Supply Chain Vulnerabilities
+    4.  **Human Risks:** Misuse, Over-Reliance, Loss of Oversight, Misinterpretation
+    5.  **Organizational Risks:** Governance, Policy, Culture, Accountability
+    """
+    return taxonomy_text
+```
+
+**Code Cell (Execution):**
+```python
+display_markdown_text(create_ai_risk_taxonomy_diagram_text())
+```
+
+**Markdown Cell (Explanation for Execution):**
+This section details the critical need for AI risk management, outlining emergent risks and categorizing AI risks into five key dimensions. The text-based "diagram" above provides a quick reference to these dimensions, illustrating a systematic approach to identifying, analyzing, and managing the diverse risks across the entire AI lifecycle.
+
+---
+
+### Section 3: Foundations of Model Risk Management (SR 11-7)
+
+**Markdown Cell:**
+## Foundations of Model Risk Management (SR 11-7)
+
+SR 11-7, issued in 2011 by the Board of Governors of the Federal Reserve System and the Office of the Comptroller of the Currency, is the foundational U.S. guidance for model risk management in financial institutions. It defines **model risk** as the potential for adverse consequences from decisions based on incorrect or misused model outputs and reports.
+
+### Core Principles and Pillars of SR 11-7
+
+SR 11-7 emphasizes key pillars and principles for effective model risk management:
+*   **Model Definition:** SR 11-7 broadly defines a model as a quantitative method, system, or approach that applies statistical, economic, financial, or mathematical theories, techniques, and assumptions to process input data into quantitative estimates.
+*   **Risk Amplification:** Model risk intensifies with greater model complexity, higher uncertainty in inputs/assumptions, broader extent of use, and larger potential impact. Modern AI models, particularly LLMs, significantly amplify these risks due to their inherent complexity and widespread application.
+*   **Effective Challenge:** This is a core principle, requiring objective, informed reviewers (independent validation teams) to critically test models, scrutinize model behavior, and identify drift and hidden errors. It mandates a robust independent validation function.
+*   **Model Risk Governance:** Mandates board and senior management oversight to ensure model risk stays within organizational tolerance. This includes clear roles, responsibilities, and policies for model development, implementation, use, and validation.
+*   **Model Lifecycle Management:** SR 11-7 outlines stages of model risk management covering development, implementation, validation, and ongoing monitoring.
+
+**Code Cell (Function Implementation):**
 ```python
 def create_sr117_pillars_table():
     """
-    Generates a DataFrame detailing the SR 11-7 MRM pillars.
+    Generates a pandas DataFrame detailing the core pillars of SR 11-7.
     """
-    pillars_data = {
-        "MRM Pillar": [
-            "Development, Implementation, and Use",
-            "Validation",
-            "Governance",
+    data = {
+        "SR 11-7 Pillar": [
+            "Model Development & Implementation",
+            "Model Validation",
+            "Model Governance",
             "Ongoing Monitoring"
         ],
-        "Key Aspect": [
-            "Sound model design, robust data, appropriate assumptions, and proper implementation.",
-            "Independent assessment of model conceptual soundness, process verification, and outcomes analysis.",
-            "Establishment of clear roles, responsibilities, policies, and oversight structures (board/senior management).",
-            "Regular review of model performance, data quality, and identification of model limitations or changes in use."
-        ]
-    }
-    return pd.DataFrame(pillars_data)
-```
-
-**Code Cell (Execution):**
-```python
-sr117_pillars_df = create_sr117_pillars_table()
-display(sr117_pillars_df.style.set_properties(**{'text-align': 'left'}).hide(axis='index'))
-```
-
-**Markdown Cell:**
-This table illustrates the core pillars of SR 11-7, which collectively form a robust framework for managing traditional model risks. These pillars provide a foundation upon which AI-specific risk management can be built.
-
----
-
-### 3.4. Introduction to AI Risk Taxonomy
-
-**Markdown Cell:**
-### Categorizing AI Risks: A Multidimensional Approach
-
-AI systems introduce unique characteristics that amplify traditional risks and create novel emergent risks. To manage these effectively, a structured approach to categorizing AI risks is essential. The AI Risk Taxonomy classifies risks across **five key dimensions**: Data, Model, System, Human, and Organizational factors. This structured classification provides a holistic view of risks throughout the entire AI lifecycle, from development to monitoring.
-
-This systematic approach helps in:
-*   **Systematic Risk Management**: Crucial for identifying, analyzing, and managing diverse AI risks.
-*   **Full AI Lifecycle Coverage**: Provides a comprehensive view of risks across the entire AI lifecycle.
-
-Let's list these dimensions.
-
-**Code Cell (Function Definition):**
-```python
-def create_ai_risk_dimensions_list():
-    """
-    Returns a dictionary representing the five key dimensions of AI risk taxonomy.
-    """
-    ai_risk_taxonomy = {
-        "Data": "Risks related to data quality, provenance, privacy, and bias in training data.",
-        "Model": "Risks related to algorithmic bias, accuracy, reliability, robustness, and interpretability.",
-        "System": "Risks associated with AI system integration, architecture, security, and supply chain vulnerabilities.",
-        "Human": "Risks stemming from misuse, over-reliance, lack of human oversight, and misinterpretation of AI outputs.",
-        "Organizational": "Risks related to governance, policy, culture, accountability, and ethical guidelines within an organization."
-    }
-    return ai_risk_taxonomy
-
-def display_ai_risk_taxonomy(taxonomy):
-    """
-    Displays the AI risk taxonomy using Markdown.
-    """
-    md_output = "### Five Key Dimensions of AI Risk Taxonomy:\n\n"
-    for dim, desc in taxonomy.items():
-        md_output += f"*   **{dim}**: {desc}\n"
-    display(Markdown(md_output))
-```
-
-**Code Cell (Execution):**
-```python
-ai_taxonomy = create_ai_risk_dimensions_list()
-display_ai_risk_taxonomy(ai_taxonomy)
-```
-
-**Markdown Cell:**
-These five dimensions provide a comprehensive framework for identifying and categorizing AI-related hazards, allowing for a structured approach to risk assessment and mitigation across the entire AI lifecycle.
-
----
-
-### 3.5. Data Risks: Quality, Provenance, and Privacy
-
-**Markdown Cell:**
-### Data Risks: The Foundation of AI Trustworthiness
-
-Data is the bedrock of any AI system. Risks related to data quality, provenance, and privacy can profoundly impact an AI model's performance, fairness, and compliance. Regulators increasingly emphasize these as critical emerging AI risks.
-
-*   **Data Quality and Relevance**: Critical for AI model performance. Poor quality, unrepresentative, or irrelevant data can lead to inaccurate, biased, or unreliable AI outputs.
-*   **Data Provenance and Lineage**: Essential for understanding the origin, transformations, and integrity of data used in AI systems. Lack of provenance makes auditing difficult and can hide malicious alterations.
-*   **Data Privacy and Sensitive Information**: Navigating regulatory expectations (e.g., GDPR, CCPA) and ensuring secure, ethical handling of sensitive data is paramount. Privacy-preserving AI techniques are increasingly important.
-*   **Model and Data Inventories**: Well-documented model cards and data cards enhance transparency and facilitate review and auditing by providing detailed information about the data used.
-
----
-
-### 3.6. Model Risks: Bias, Accuracy, and Robustness
-
-**Markdown Cell:**
-### Model Risks: Beyond Traditional Performance
-
-AI models, especially complex deep learning models, introduce unique challenges related to their internal workings and behavior.
-
-*   **Algorithmic Bias & Fairness**: Addresses risks from biased training data, flawed algorithms, or unrepresentative populations, leading to unfair, discriminatory, or disparate AI outputs. Fairness metrics are crucial for quantifying and mitigating these biases.
-*   **Accuracy & Reliability**: Examines issues with the precision, consistency, and trustworthiness of model predictions; highlights potential for flawed outputs under normal operating conditions.
-*   **Model Robustness**: Discusses the AI system's ability to maintain stable performance against diverse inputs, unexpected shifts (e.g., concept drift), and adversarial attacks (e.g., prompt injection).
-*   **Mitigation Strategies**: Emphasizes continuous monitoring for model drift, concept shift, and comprehensive documentation (e.g., model cards) to manage these critical risks.
-
----
-
-### 3.7. System Risks: Integration, Architecture, and Supply Chain
-
-**Markdown Cell:**
-### System Risks: The AI Ecosystem
-
-AI systems rarely operate in isolation. Their integration into larger technological ecosystems introduces a new class of risks related to architecture, dependencies, and supply chain vulnerabilities.
-
-*   **Integration Flaws**: Integrating AI models into larger systems can create architectural weaknesses, performance bottlenecks, and unforeseen interactions.
-*   **Architectural Challenges**: Complex agentic AI architectures and their autonomy can cause scalability issues, error propagation across steps, and systemic failures.
-*   **AI Supply Chain Vulnerabilities**: Ensuring the integrity, quality, and security of third-party models, data providers, and components is critical (vetting, provenance, security).
-*   **Supply Chain Security Measures**: Implement hashing, developer provenance verification, API security, and maintain an AI Bill of Materials (AI-BOM) to track components and dependencies.
-
----
-
-### 3.8. Human-Centric AI Risks: Misuse, Over-Reliance, and Oversight
-
-**Markdown Cell:**
-### Human-Centric AI Risks: The Human-AI Interface
-
-The interaction between humans and AI systems introduces unique risks related to understanding, trust, and control.
-
-*   **Misuse and Misinterpretation**: AI outputs, especially from generative models like LLMs, can be factually incorrect (hallucinations) yet appear credible, risking dangerous misinterpretation and application in high-stakes fields like medicine or finance.
-*   **Over-Reliance and Autonomy Creep**: Poorly defined AI goals or excessive trust can cause unintended goal pursuit or "autonomy creep," where agentic systems operate beyond their intended scope, potentially leading to unauthorized or harmful actions without human intervention.
-*   **Loss of Human Oversight**: Effective human control in autonomous AI demands robust governance, human-in-the-loop (HITL) checks, and expanded risk oversight, particularly for agentic AI. Ensuring that humans retain final authority is crucial.
-
----
-
-### 3.9. Organizational AI Risk: Governance, Policy, and Culture
-
-**Markdown Cell:**
-### Organizational AI Risk: Establishing a Responsible AI Ecosystem
-
-Beyond the technical aspects, an organization's internal structures, policies, and culture play a critical role in managing AI risk.
-
-*   **AI Risk Governance & Oversight**: Establish clear roles and responsibilities for AI risk oversight, with active board and senior management engagement. This is guided by frameworks like SR 11-7 and NIST AI RMF, ensuring accountability from the top down.
-*   **Policy & Ethical Guidelines**: Develop and enforce comprehensive organizational policies and ethical guidelines for responsible AI development, deployment, and use. This includes codes of conduct, usage policies, and ethical review processes.
-*   **Fostering a Responsible AI Culture**: Cultivate an organizational culture that promotes continuous challenge, transparency, and accountability in all AI initiatives. This means encouraging critical thinking, open discussion of risks, and a commitment to ethical AI principles.
-
----
-
-### 3.10. Interconnected AI Risks & Emerging Threats
-
-**Markdown Cell:**
-### Interconnected Risks and Emergent Threats in AI
-
-AI risks are rarely isolated; they are often **interdependent**, with various categories amplifying one another in complex systems. This interconnectedness makes AI risk management particularly challenging.
-
-*   **Emerging AI Risks**: Include aspects like data quality and relevance, which are increasingly emphasized by regulators due to their foundational impact on AI trustworthiness.
-*   **LLM-Specific Hazards**: Large Language Models introduce unique and significant threats such as:
-    *   **Hallucinations**: AI models generating plausible but false information.
-    *   **Goal Mis-specification**: AI systems pursuing objectives that deviate from human intent.
-    *   These pose significant dangers, especially in high-stakes applications where accuracy and reliability are paramount.
-*   **Bias and Ethical Concerns**: Are amplified by the opacity and scale of LLM training data, making identification and mitigation of biases challenging. The sheer volume and diversity of data can embed subtle biases that are difficult to detect.
-
----
-
-### 3.11. NIST AI RMF 1.0: A Framework for Trustworthy AI
-
-**Markdown Cell:**
-### NIST AI RMF 1.0: A Voluntary Framework for Trustworthy AI
-
-The National Institute of Standards and Technology (NIST) released the **AI Risk Management Framework (AI RMF 1.0)** in January 2023. This is a **voluntary U.S. framework** developed with extensive industry and government input, designed to promote trustworthy AI.
-
-Its primary goal is to improve the ability to incorporate **trustworthiness considerations** into AI product design, development, use, and evaluation. It encompasses a broader set of attributes compared to traditional MRM, addressing the unique characteristics of AI. The framework complements existing guidance, like SR 11-7, by emphasizing specific roles and policies for AI risk oversight across all industries, not just financial services.
-
-The AI RMF is structured around four core functions: **Govern, Map, Measure, and Manage**.
-
-**Code Cell (Function Definition):**
-```python
-def create_nist_airmf_functions_table():
-    """
-    Generates a DataFrame detailing the NIST AI RMF functions.
-    """
-    nist_functions_data = {
-        "NIST AI RMF Function": [
-            "Govern",
-            "Map",
-            "Measure",
-            "Manage"
-        ],
         "Description": [
-            "Establish an AI risk management strategy, culture, and policies; ensure accountability and human oversight.",
-            "Identify, characterize, and contextualize AI risks; understand the AI system's purpose, design, and data.",
-            "Quantify, evaluate, and track AI risks; develop and apply appropriate risk metrics and assurance processes.",
-            "Allocate resources, implement controls, and prioritize actions to mitigate AI risks; continuous monitoring and adaptation."
+            "Robust processes for model design, data quality, and implementation controls.",
+            "Independent assessment of model logic, data, and performance; includes outcomes analysis and backtesting.",
+            "Clear roles, responsibilities, policies, and senior management oversight for model risk management.",
+            "Continuous monitoring of model performance, data characteristics, and model limitations."
         ]
     }
-    return pd.DataFrame(nist_functions_data)
+    df = pd.DataFrame(data)
+    return df
 ```
 
 **Code Cell (Execution):**
 ```python
-nist_airmf_functions_df = create_nist_airmf_functions_table()
-display(nist_airmf_functions_df.style.set_properties(**{'text-align': 'left'}).hide(axis='index'))
+display_markdown_text("### SR 11-7 Model Risk Management (MRM) Pillars")
+display(create_sr117_pillars_table())
 ```
 
-**Markdown Cell:**
-These four functions provide a systematic approach for organizations to address AI risks throughout the entire AI lifecycle, building trust in AI systems.
+**Markdown Cell (Explanation for Execution):**
+The table above summarizes the fundamental pillars of SR 11-7, which establish a structured approach to managing model risk in financial institutions. These pillars form the basis upon which AI risk management frameworks build, extending the scope to encompass the unique complexities of AI systems.
 
 ---
 
-### 3.12. Attributes of Trustworthy AI: Validity, Reliability & Safety
+### Section 4: Broadening Model Definition & Risk Tiering
 
 **Markdown Cell:**
-### Attributes of Trustworthy AI: Core Principles
+## Broadening Model Definition & Risk Tiering
 
-NIST AI RMF emphasizes several key attributes that define **trustworthy AI**. These go beyond traditional performance metrics and address the societal and ethical implications of AI systems.
+The advent of AI necessitates a broader interpretation of what constitutes a "model" and how risks are categorized and managed. Traditional SR 11-7 focuses primarily on quantitative methods for financial decisions, while modern frameworks like NIST AI RMF encompass a wider range of AI/ML systems and their associated processes.
 
-**Validity, Reliability, and Safety** are critical for the foundational operation of AI:
+This expanded view also impacts **risk tiering**, moving beyond simple materiality to consider impact, complexity, data sensitivity, and interpretability.
 
-*   **Validity**: Ensuring the AI system accurately performs its intended function and produces correct outputs for its specified purpose. This involves verifying that the model's logic and underlying assumptions are sound.
-*   **Reliability**: Guarantees consistent and stable performance of the AI system over time and across various operational conditions. A reliable AI system should not degrade unexpectedly or produce erratic results.
-*   **Safety**: Minimizing the potential for the AI system to cause harm to individuals, society, or the environment, particularly in safety-critical applications (e.g., autonomous vehicles, medical diagnostics).
-
----
-
-### 3.13. Attributes of Trustworthy AI: Security, Transparency & Fairness
-
-**Markdown Cell:**
-### Attributes of Trustworthy AI: Essential for Public Trust
-
-Beyond operational integrity, trustworthy AI also requires strong commitments to security, transparency, and fairness.
-
-*   **Security**: Protect AI systems from adversarial attacks (e.g., prompt injection, data poisoning, model evasion) and ensure data integrity and access governance across the AI lifecycle. Cybersecurity best practices must be adapted for AI.
-*   **Transparency**: Understand how AI systems, especially LLMs, arrive at outputs through interpretability methods like saliency maps, counterfactual explanations, and feature importance. This enables stakeholders to scrutinize decision-making processes.
-*   **Fairness**: Identify and mitigate biases encoded and amplified by AI, particularly in LLMs, to ensure equitable outcomes for all demographic groups and prevent discriminatory impacts. This involves careful data auditing and bias detection techniques.
-*   **Challenges & Best Practices**: Addressing emergent risks like hallucinations and autonomy creep in LLMs requires rigorous adversarial testing (e.g., red-teaming), stress tests, and robust human-in-the-loop oversight mechanisms to maintain control and accountability.
-
----
-
-### 3.14. Attributes of Trustworthy AI: Accountability & Privacy-Preserving
-
-**Markdown Cell:**
-### Attributes of Trustworthy AI: Ethical and Regulatory Compliance
-
-Accountability and privacy are fundamental to ensuring AI systems align with ethical principles and regulatory requirements.
-
-*   **Accountability**: Establishing clear roles and policies for AI risk oversight, including **board-level governance**, to ensure responsibility for AI outcomes and decisions. This involves defining who is responsible when an AI system makes an error or causes harm.
-*   **Privacy-Preserving**: Implementing strategies to address data sensitivity and integrating privacy by design throughout the entire AI lifecycle. This includes techniques like differential privacy, federated learning, and secure multi-party computation to protect sensitive information.
-*   **Governance**: Adapting and implementing robust governance structures to oversee model risk within organizational tolerance, especially for complex modern AI models. This extends SR 11-7's governance principles to cover AI-specific nuances.
-
-**Code Cell (Function Definition):**
+**Code Cell (Function Implementation):**
 ```python
-def create_nist_airmf_attributes_table():
+def create_sr117_modern_frameworks_comparison_table():
     """
-    Generates a DataFrame detailing the attributes of trustworthy AI in NIST AI RMF.
+    Generates a pandas DataFrame comparing SR 11-7 views with modern AI frameworks.
     """
-    nist_attributes_data = {
-        "Attribute": [
-            "Validity", "Reliability", "Safety", "Security",
-            "Transparency", "Fairness", "Accountability", "Privacy-Preserving"
-        ],
-        "Description": [
-            "Accurate performance of intended function and correct outputs for specified purpose.",
-            "Consistent and stable performance over time and across operational conditions.",
-            "Minimizing potential for harm to individuals, society, or the environment.",
-            "Protection against adversarial attacks; ensuring data integrity and access governance.",
-            "Understanding how AI systems arrive at outputs through interpretability methods.",
-            "Identifying and mitigating biases to ensure equitable outcomes.",
-            "Establishing clear roles, policies, and board-level governance for AI risk oversight.",
-            "Implementing strategies for data sensitivity and privacy by design throughout AI lifecycle."
-        ]
-    }
-    return pd.DataFrame(nist_attributes_data)
-```
-
-**Code Cell (Execution):**
-```python
-nist_attributes_df = create_nist_airmf_attributes_table()
-display(nist_attributes_df.style.set_properties(**{'text-align': 'left'}).hide(axis='index'))
-```
-
-**Markdown Cell:**
-This table summarizes the comprehensive set of trustworthiness attributes promoted by the NIST AI RMF, highlighting the multi-faceted nature of responsible AI.
-
----
-
-### 3.15. Comparative Analysis: SR 11-7 vs. NIST AI RMF
-
-**Markdown Cell:**
-### Complementary Frameworks: SR 11-7 & NIST AI RMF
-
-SR 11-7 and NIST AI RMF, while distinct in their origins and immediate focus, are highly **complementary frameworks** for managing risk, especially in the context of advanced AI.
-
-*   **Distinct Scopes**:
-    *   SR 11-7 focuses specifically on **model risk management in the banking sector**.
-    *   NIST AI RMF applies to **all AI systems across industries**, providing a broader and more flexible approach.
-*   **Shared Objectives**: Both aim to enhance **trustworthiness**, ensure **effective challenge**, and establish robust **governance** for AI systems. They both recognize the need for rigorous oversight and continuous risk management.
-*   **Integration Benefits**: Mapping SR 11-7's MRM pillars (Development/Implementation, Validation, Governance, Ongoing Monitoring) to NIST AI RMF's functions (Govern, Map, Measure, Manage) enables comprehensive risk oversight. This integration allows organizations to leverage existing MRM practices while adapting to AI-specific nuances.
-
-Let's examine a side-by-side comparison of some key aspects.
-
-**Code Cell (Function Definition):**
-```python
-def create_framework_comparison_table():
-    """
-    Generates a DataFrame for side-by-side comparison of SR 11-7 and NIST AI RMF.
-    """
-    comparison_data = {
-        "Aspect": [
-            "Primary Focus",
-            "Scope",
-            "Model/AI System Definition",
-            "Risk Tiering",
-            "Validation",
-            "Emergent Risks Addressed"
-        ],
+    data = {
+        "Aspect": ["Model Definition", "Model Tiering", "Risk Management", "Validation"],
         "Traditional SR 11-7 View": [
-            "Model Risk Management in Financial Institutions.",
-            "Banking Sector (models for financial decisions, risk calculation).",
-            "Quantitative methods, systems, and approaches based on statistical, financial, or economic theories.",
+            "Focus on quantitative methods for financial decisions.",
             "Categorization by materiality and complexity.",
-            "Standard independent validation practices (conceptual soundness, process verification, outcomes analysis).",
-            "Limited explicit mention of AI-specific emergent risks beyond traditional model limitations."
+            "General model risk management.",
+            "Standard validation practices."
         ],
         "Modern Frameworks (e.g., NIST AI RMF)": [
-            "Trustworthy AI Risk Management across all sectors.",
-            "All AI systems, including LLMs, agentic AI, across diverse industries.",
-            "AI/ML systems, their outputs, decision-making processes, and human-AI interaction.",
+            "Includes AI/ML systems, their outputs, and even decision-making processes.",
             "Categorization by risk level (impact, complexity, data sensitivity, interpretability).",
-            "Enhanced validation (e.g., third-party, adversarial testing, red-teaming, bias audits) and more documentation for higher-tier AI models.",
-            "Explicitly addresses hallucinations, autonomy creep, goal mis-specification, amplified bias, and supply chain vulnerabilities."
+            "Tailored risk management strategies based on tier.",
+            "Enhanced validation (e.g., third-party, continuous) and more documentation for higher-tier AI models."
         ]
     }
-    return pd.DataFrame(comparison_data)
+    df = pd.DataFrame(data)
+    return df
 ```
 
 **Code Cell (Execution):**
 ```python
-framework_comparison_df = create_framework_comparison_table()
-display(framework_comparison_df.style.set_properties(**{'text-align': 'left'}).hide(axis='index'))
+display_markdown_text("### SR 11-7 vs. Modern AI Frameworks: A Comparative View")
+display(create_sr117_modern_frameworks_comparison_table())
 ```
 
-**Markdown Cell:**
-This comparison highlights how the NIST AI RMF broadens the traditional scope of SR 11-7, extending the definition of "model" to "AI systems" and explicitly addressing the novel risks and governance requirements of modern AI.
+**Markdown Cell (Explanation for Execution):**
+The comparison table highlights the evolution of risk management thinking from SR 11-7's traditional scope to the more expansive perspective of modern AI risk frameworks like NIST AI RMF. This shift is crucial for addressing the unique characteristics and risks associated with contemporary AI systems.
 
 ---
 
-### 3.16. Mapping SR 11-7 MRM to NIST AI RMF: Govern Function
+### Section 5: AI Risk Taxonomy: Data and Model Risks
 
 **Markdown Cell:**
-### Mapping Frameworks: From Pillars to Functions (Govern)
+## AI Risk Taxonomy: Deep Dive
 
-Integrating SR 11-7's established MRM pillars with the NIST AI RMF's functions provides a pathway for organizations to evolve their risk management practices for AI. Let's start by mapping SR 11-7 pillars related to overall oversight and establishment to the NIST AI RMF 'Govern' function.
+Building on the five key dimensions, let's explore specific risks within each category.
 
-The **Govern** function in NIST AI RMF focuses on establishing an AI risk management strategy, culture, and policies, ensuring accountability and human oversight.
+### Data Risks: Quality, Provenance, and Privacy
 
-**Code Cell (Function Definition):**
+Data is the lifeblood of AI, and risks associated with it can significantly impact model performance and trustworthiness.
+*   **Data Quality and Relevance:** Critical for AI model performance. Regulators increasingly emphasize the role of data quality, completeness, and relevance as emerging AI risks. Poor quality data can lead to inaccurate or biased model outputs.
+*   **Data Provenance and Lineage:** Essential for understanding the origin, transformations, and integrity of data used in AI systems. A clear audit trail helps in tracking and mitigating data-related risks.
+*   **Data Privacy and Sensitive Information:** Navigating regulatory expectations (e.g., GDPR, CCPA) and ensuring secure, ethical handling of sensitive data is paramount. Privacy-preserving AI techniques are increasingly important.
+
+### Model Risks: Bias, Accuracy, and Robustness
+
+Model risks are inherent to the AI algorithms themselves and how they are trained and deployed.
+*   **Algorithmic Bias & Fairness:** Addresses risks from biased training data or model design, leading to unfair, discriminatory, or disparate AI outputs for different groups. Fairness metrics often need to be carefully chosen and monitored, for example:
+    *   **Demographic Parity:** $P(\hat{Y}=1 | A=a) = P(\hat{Y}=1 | A=b)$
+    *   **Equalized Odds:** $P(\hat{Y}=1 | Y=y, A=a) = P(\hat{Y}=1 | Y=y, A=b)$
+    Where $\hat{Y}$ is the predicted outcome, $Y$ is the true outcome, and $A$ is a protected attribute.
+*   **Accuracy & Reliability:** Examines issues with the precision, consistency, and trustworthiness of model predictions; highlights potential for flawed outputs. This includes standard performance metrics like $Accuracy$, $F1-Score$, $Precision$, and $Recall$. For example:
+    $$Accuracy = \frac{\text{True Positives} + \text{True Negatives}}{\text{Total Samples}}$$
+    $$F1-Score = 2 \times \frac{Precision \times Recall}{Precision + Recall}$$
+*   **Model Robustness:** Discusses the AI system's ability to maintain stable performance against diverse inputs, unexpected shifts (e.g., concept drift), and adversarial attacks.
+
+**Code Cell (Function Implementation):**
 ```python
-def create_sr117_nist_govern_mapping_table():
+# No specific function to implement for this conceptual section beyond display_markdown_text.
+# The focus is on definitions and formulas.
+```
+
+**Code Cell (Execution):**
+```python
+# No specific function call needed. This cell is intentionally left empty.
+```
+
+**Markdown Cell (Explanation for Execution):**
+This section breaks down Data and Model Risks, defining key concepts like data provenance and model robustness. It also introduces conceptual performance and fairness metrics, illustrating where mathematical concepts would apply in the 'Measure' function of AI risk management.
+
+---
+
+### Section 6: AI Risk Taxonomy: System, Human, and Organizational Risks
+
+**Markdown Cell:**
+## AI Risk Taxonomy: System, Human, and Organizational Risks
+
+Continuing our deep dive into the AI risk taxonomy, we now cover the remaining three dimensions.
+
+### System Risks: Integration, Architecture, and Supply Chain
+
+These risks arise from how AI components are integrated into larger systems and the broader ecosystem.
+*   **Integration Flaws:** Integrating AI models into larger, complex systems can create architectural weaknesses, performance bottlenecks, and unforeseen interactions.
+*   **Architectural Challenges:** Complex agentic AI architectures, where AI systems act with a degree of autonomy, can cause scalability issues and amplify risks through error propagation across multiple steps or agents.
+*   **AI Supply Chain Vulnerabilities:** Ensuring the integrity, quality, and security of third-party models, data, and components is critical. This includes rigorous vetting, provenance tracking, and security assessments of all AI supply chain elements.
+*   **Supply Chain Security Measures:** Implement hashing for component verification, developer provenance verification, API security for model access, and maintaining an **AI Bill of Materials (AI-BOM)** to track all components.
+
+### Human-Centric AI Risks: Misuse, Over-Reliance, and Oversight
+
+These risks stem from the interaction between humans and AI systems.
+*   **Misuse and Misinterpretation:** AI outputs, especially from LLMs, can be factually incorrect yet appear credible (hallucinations), risking dangerous misinterpretation and inappropriate use in high-stakes fields like medicine or finance.
+*   **Over-Reliance and Autonomy Creep:** Poorly defined AI goals or excessive trust can cause unintended goal pursuit or "autonomy creep," where agentic systems operate beyond their intended scope, potentially leading to unauthorized or harmful actions.
+*   **Loss of Human Oversight:** Effective human control in autonomous AI demands robust governance, human-in-the-loop checks (e.g., validation points, human review for critical decisions), and expanded risk oversight, particularly for agentic AI.
+
+### Organizational AI Risk: Governance, Policy, and Culture
+
+These overarching risks relate to the institutional environment in which AI is developed and deployed.
+*   **Robust Governance & Oversight:** Establishing clear roles, responsibilities, and accountability for AI risk oversight, with active board and senior management engagement, guided by frameworks like SR 11-7 and NIST AI RMF.
+*   **Policy & Ethical Guidelines:** Develop and enforce comprehensive organizational policies and ethical guidelines for responsible AI development, deployment, and usage to mitigate legal and reputational risks.
+*   **Fostering a Responsible AI Culture:** Cultivate an organizational culture that promotes continuous challenge, transparency, and accountability in all AI initiatives, encouraging open discussion of AI risks and ethical considerations.
+
+**Code Cell (Function Implementation):**
+```python
+# No specific function to implement for this conceptual section beyond display_markdown_text.
+# The focus is on definitions and conceptual explanations.
+```
+
+**Code Cell (Execution):**
+```python
+# No specific function call needed. This cell is intentionally left empty.
+```
+
+**Markdown Cell (Explanation for Execution):**
+This section completes the detailed exploration of AI risk taxonomy, covering System, Human, and Organizational risks. It highlights the interconnectedness of these risk dimensions and the importance of a holistic approach to AI risk management, from architectural design to organizational culture.
+
+---
+
+### Section 7: Interconnected AI Risks & Emerging Threats
+
+**Markdown Cell:**
+## Interconnected AI Risks & Emerging Threats
+
+AI risks are not isolated; they are often **interdependent**, with various categories amplifying one another in complex systems. Understanding these connections is crucial for holistic risk management.
+
+### Key Interdependencies and Emerging Concerns
+
+*   **Data Quality and Relevance:** Emerging AI risks are heavily influenced by data quality and relevance, as emphasized by regulators. Poor data quality can directly lead to algorithmic bias, inaccurate models, and ultimately, misinterpretation by human users.
+*   **LLM-Specific Hazards:** Large Language Models (LLMs) introduce unique and significant threats:
+    *   **Hallucinations:** As discussed, these can lead to critical errors, especially in high-stakes applications.
+    *   **Goal Mis-specification:** Complex LLM tasks can lead to AI pursuing unintended objectives.
+    *   **Autonomy Creep:** As LLMs become more integrated into agentic systems, their ability to act autonomously without sufficient human oversight poses a significant risk.
+*   **Bias and Ethical Concerns:** These are often amplified by opaque LLM training data, which can contain hidden biases that are difficult to detect and mitigate. This opacity makes comprehensive bias audits challenging.
+
+Managing these interconnected and emergent risks requires a proactive and adaptive approach, going beyond traditional model risk management to encompass the full AI lifecycle and its broader societal impacts.
+
+**Code Cell (Function Implementation):**
+```python
+# No specific function to implement for this conceptual section beyond display_markdown_text.
+# The focus is on definitions and conceptual explanations.
+```
+
+**Code Cell (Execution):**
+```python
+# No specific function call needed. This cell is intentionally left empty.
+```
+
+**Markdown Cell (Explanation for Execution):**
+This section underscores the complex and interconnected nature of AI risks, particularly highlighting emerging threats associated with LLMs. It emphasizes that a comprehensive understanding of these interdependencies is vital for developing effective mitigation strategies.
+
+---
+
+### Section 8: Introduction to NIST AI Risk Management Framework (AI RMF 1.0)
+
+**Markdown Cell:**
+## Introduction to NIST AI Risk Management Framework (AI RMF 1.0)
+
+The NIST AI Risk Management Framework (AI RMF 1.0) is a voluntary U.S. framework released in January 2023, developed with extensive industry and government input. Its primary goal is to improve the ability to incorporate **trustworthiness considerations** into AI product design, development, use, and evaluation across various industries.
+
+### Core Objectives of AI RMF
+
+*   **Promote Trustworthy AI:** By providing a flexible, systematic, and comprehensive approach to managing AI risks.
+*   **Complement Existing Guidance:** The AI RMF complements existing risk management guidance, like SR 11-7, by emphasizing specific roles, policies, and processes tailored for AI risk oversight.
+*   **Encompass Trustworthiness Attributes:** It addresses a broad range of AI trustworthiness attributes, which are crucial for responsible and ethical AI.
+
+**Code Cell (Function Implementation):**
+```python
+# No specific function to implement for this conceptual section beyond display_markdown_text.
+# The focus is on definitions and conceptual explanations.
+```
+
+**Code Cell (Execution):**
+```python
+# No specific function call needed. This cell is intentionally left empty.
+```
+
+**Markdown Cell (Explanation for Execution):**
+This section introduces the NIST AI RMF 1.0, outlining its purpose as a voluntary framework for promoting trustworthy AI. It highlights the framework's complementary nature to existing guidance like SR 11-7 and its focus on embedding trustworthiness throughout the AI lifecycle.
+
+---
+
+### Section 9: Trustworthy AI Attributes: Validity, Reliability, Safety
+
+**Markdown Cell:**
+## Trustworthy AI Attributes: Validity, Reliability, Safety
+
+The NIST AI RMF emphasizes several key attributes that define **trustworthy AI**. These attributes extend beyond traditional model performance metrics to address the broader societal and operational impacts of AI systems.
+
+### Validity
+
+*   **Definition:** Ensuring the AI system accurately performs its intended function and produces correct outputs for its specified purpose. This includes domain validity (is the model fit for its specific use case?) and ethical validity (does it align with ethical principles?).
+*   **Importance:** A valid AI system performs as expected, reducing the risk of errors and unintended consequences.
+
+### Reliability
+
+*   **Definition:** Guarantees consistent and stable performance of the AI system over time and across various operational conditions, including different data inputs and environmental changes.
+*   **Importance:** A reliable AI system maintains its performance and outputs under varying circumstances, building user trust and preventing unexpected failures.
+
+### Safety
+
+*   **Definition:** Minimizing the potential for the AI system to cause harm to individuals, society, or the environment, particularly in safety-critical applications (e.g., autonomous vehicles, medical diagnostics).
+*   **Importance:** Safety is paramount to prevent adverse physical, psychological, or financial outcomes. It involves identifying and mitigating potential hazards before deployment.
+
+**Code Cell (Function Implementation):**
+```python
+def create_nist_ai_rmf_validity_reliability_safety_attributes_table():
     """
-    Generates a DataFrame mapping SR 11-7 pillars to NIST AI RMF 'Govern' function.
+    Generates a pandas DataFrame listing NIST AI RMF trustworthiness attributes for Validity, Reliability, Safety.
     """
-    mapping_data = {
+    data = {
+        "Attribute": ["Validity", "Reliability", "Safety"],
+        "Description": [
+            "Ensuring the AI system accurately performs its intended function and produces correct outputs.",
+            "Guarantees consistent and stable performance of the AI system over time and across operational conditions.",
+            "Minimizing the potential for the AI system to cause harm to individuals, society, or the environment."
+        ]
+    }
+    df = pd.DataFrame(data)
+    return df
+```
+
+**Code Cell (Execution):**
+```python
+display_markdown_text("### Key Trustworthy AI Attributes (Part 1)")
+display(create_nist_ai_rmf_validity_reliability_safety_attributes_table())
+```
+
+**Markdown Cell (Explanation for Execution):**
+This section defines the critical trustworthiness attributes of Validity, Reliability, and Safety as outlined by the NIST AI RMF. The table provides a concise summary, emphasizing that trustworthy AI must not only function correctly but also perform consistently and without causing undue harm.
+
+---
+
+### Section 10: Trustworthy AI Attributes: Security, Transparency, Fairness
+
+**Markdown Cell:**
+## Trustworthy AI Attributes: Security, Transparency, Fairness
+
+Continuing with the NIST AI RMF trustworthiness attributes, we examine security, transparency, and fairness, which are vital for building confidence in AI systems.
+
+### Security
+
+*   **Definition:** Protecting AI systems from adversarial attacks (e.g., prompt injection, data poisoning), unauthorized access, and ensuring data integrity and access governance across the entire AI lifecycle.
+*   **Importance:** A secure AI system resists malicious manipulation and protects sensitive data, maintaining its intended function and preventing exploitation.
+
+### Transparency
+
+*   **Definition:** Understanding how AI systems, especially LLMs, arrive at outputs. This involves using interpretability methods (e.g., saliency maps, LIME, SHAP) and counterfactual explanations to reveal the model's decision-making process.
+*   **Importance:** Transparency fosters trust and enables effective challenge and audit, allowing stakeholders to understand and question AI decisions.
+
+### Fairness
+
+*   **Definition:** Identifying and mitigating biases encoded and amplified by AI, particularly in LLMs, to ensure equitable and just outcomes for all individuals and groups. This includes addressing disparate impact and treatment.
+*   **Importance:** Fairness is critical for preventing discrimination and ensuring that AI systems do not perpetuate or exacerbate societal inequalities.
+
+**Code Cell (Function Implementation):**
+```python
+def create_nist_ai_rmf_security_transparency_fairness_attributes_table():
+    """
+    Generates a pandas DataFrame listing NIST AI RMF trustworthiness attributes for Security, Transparency, Fairness.
+    """
+    data = {
+        "Attribute": ["Security", "Transparency", "Fairness"],
+        "Description": [
+            "Protecting AI systems from adversarial attacks and ensuring data integrity and access governance.",
+            "Understanding how AI systems arrive at outputs through interpretability methods and counterfactuals.",
+            "Identifying and mitigating biases in AI to ensure equitable and just outcomes for all."
+        ]
+    }
+    df = pd.DataFrame(data)
+    return df
+```
+
+**Code Cell (Execution):**
+```python
+display_markdown_text("### Key Trustworthy AI Attributes (Part 2)")
+display(create_nist_ai_rmf_security_transparency_fairness_attributes_table())
+```
+
+**Markdown Cell (Explanation for Execution):**
+This table outlines the crucial attributes of Security, Transparency, and Fairness within the NIST AI RMF. These attributes are particularly salient for AI systems, especially LLMs, where issues like adversarial attacks, model opaqueness, and embedded biases pose significant challenges.
+
+---
+
+### Section 11: Trustworthy AI Attributes: Accountability & Privacy-Preserving
+
+**Markdown Cell:**
+## Trustworthy AI Attributes: Accountability & Privacy-Preserving
+
+The final set of NIST AI RMF trustworthiness attributes focuses on establishing responsibility and protecting sensitive information.
+
+### Accountability
+
+*   **Definition:** Establishing clear roles, responsibilities, and policies for AI risk oversight, including robust board-level governance, to ensure responsibility for AI outcomes and decisions. This involves defining who is ultimately answerable for AI system performance and impact.
+*   **Importance:** Accountability ensures that there are mechanisms for recourse and responsibility when AI systems cause harm or fail to meet expectations.
+
+### Privacy-Preserving
+
+*   **Definition:** Implementing strategies to address data sensitivity and integrating privacy by design throughout the entire AI lifecycle. This includes techniques like differential privacy, federated learning, and homomorphic encryption.
+*   **Importance:** Protecting individual privacy is fundamental for ethical AI and maintaining public trust, especially when handling personal or sensitive data.
+
+**Code Cell (Function Implementation):**
+```python
+def create_nist_ai_rmf_accountability_privacy_attributes_table():
+    """
+    Generates a pandas DataFrame listing NIST AI RMF trustworthiness attributes for Accountability and Privacy-Preserving.
+    """
+    data = {
+        "Attribute": ["Accountability", "Privacy-Preserving"],
+        "Description": [
+            "Establishing clear roles, policies, and governance for AI risk oversight to ensure responsibility for AI outcomes.",
+            "Implementing strategies to address data sensitivity and integrating privacy by design throughout the AI lifecycle."
+        ]
+    }
+    df = pd.DataFrame(data)
+    return df
+```
+
+**Code Cell (Execution):**
+```python
+display_markdown_text("### Key Trustworthy AI Attributes (Part 3)")
+display(create_nist_ai_rmf_accountability_privacy_attributes_table())
+```
+
+**Markdown Cell (Explanation for Execution):**
+This section concludes the overview of NIST AI RMF's trustworthiness attributes, focusing on Accountability and Privacy-Preserving. These attributes are foundational for ensuring that AI systems are developed and used responsibly, with clear lines of responsibility and robust protection of sensitive data.
+
+---
+
+### Section 12: Complementary Frameworks: SR 11-7 & NIST AI RMF
+
+**Markdown Cell:**
+## Complementary Frameworks: SR 11-7 & NIST AI RMF
+
+SR 11-7 (focused on banking model risk) and NIST AI RMF (applicable to all AI systems) are not mutually exclusive but rather **complementary frameworks** for managing risk.
+
+### Distinct Scopes
+
+*   **SR 11-7:** Primarily focuses on model risk management within the **banking sector**, driven by regulatory compliance for financial models.
+*   **NIST AI RMF:** Applies to **all AI systems** across diverse industries, offering a broader, voluntary framework for promoting trustworthy AI.
+
+### Shared Objectives
+
+Despite their distinct scopes, both frameworks share critical objectives:
+*   **Enhance Trustworthiness:** Both aim to ensure that models/AI systems are reliable and can be trusted.
+*   **Ensure Effective Challenge:** Both emphasize the need for objective and independent review.
+*   **Establish Robust Governance:** Both mandate clear roles, policies, and senior management oversight for risk management.
+
+### Integration Benefits
+
+Mapping SR 11-7's MRM pillars (Development/Implementation, Validation, Governance, Ongoing Monitoring) to NIST AI RMF's functions (Govern, Map, Measure, Manage) enables comprehensive risk oversight by building upon existing MRM structures and adapting them for AI.
+
+**Code Cell (Function Implementation):**
+```python
+def create_sr117_nist_comparison_summary_table():
+    """
+    Generates a pandas DataFrame summarizing the comparison between SR 11-7 and NIST AI RMF.
+    """
+    data = {
+        "Aspect": ["Scope", "Primary Focus", "Regulatory Nature", "Key Objective"],
+        "SR 11-7": [
+            "Banking sector (financial models)",
+            "Model Risk Management (MRM)",
+            "Mandatory (for regulated financial institutions)",
+            "Minimize adverse outcomes from model use"
+        ],
+        "NIST AI RMF": [
+            "All AI systems across industries",
+            "Trustworthy AI (risk management for AI)",
+            "Voluntary (but rapidly becoming industry best practice)",
+            "Foster development and use of trustworthy AI"
+        ]
+    }
+    df = pd.DataFrame(data)
+    return df
+```
+
+**Code Cell (Execution):**
+```python
+display_markdown_text("### SR 11-7 vs. NIST AI RMF: Summary Comparison")
+display(create_sr117_nist_comparison_summary_table())
+```
+
+**Markdown Cell (Explanation for Execution):**
+This table provides a concise summary of the similarities and differences between SR 11-7 and NIST AI RMF. It highlights their distinct scopes and regulatory natures while emphasizing their shared objectives in enhancing trustworthiness and governance, setting the stage for integrating these frameworks.
+
+---
+
+### Section 13: Mapping SR 11-7 MRM to NIST AI RMF: Govern Function
+
+**Markdown Cell:**
+## Mapping SR 11-7 MRM to NIST AI RMF: The "Govern" Function
+
+The NIST AI RMF organizes AI risk management activities into four core functions: **Govern, Map, Measure, and Manage**. These functions are designed to be continuous and iterative. We will now explore how SR 11-7 MRM pillars align with these functions, starting with "Govern."
+
+The **Govern** function in NIST AI RMF is about fostering a culture of responsible AI and establishing an AI risk management strategy. This aligns directly with the overall governance and oversight aspects emphasized in SR 11-7.
+
+**Code Cell (Function Implementation):**
+```python
+def create_sr117_to_nist_govern_mapping_table():
+    """
+    Generates a pandas DataFrame mapping SR 11-7 MRM pillars to the NIST AI RMF "Govern" function.
+    """
+    data = {
         "SR 11-7 MRM Pillar": [
-            "Governance",
+            "Model Governance",
             "Development/Implementation",
             "Validation",
             "Ongoing Monitoring"
@@ -531,38 +638,37 @@ def create_sr117_nist_govern_mapping_table():
             "Establishing robust procedures for continuous oversight, performance monitoring, and accountability throughout the AI lifecycle."
         ]
     }
-    return pd.DataFrame(mapping_data)
+    df = pd.DataFrame(data)
+    return df
 ```
 
 **Code Cell (Execution):**
 ```python
-govern_mapping_df = create_sr117_nist_govern_mapping_table()
-display(govern_mapping_df.style.set_properties(**{'text-align': 'left'}).hide(axis='index'))
+display_markdown_text("### Mapping SR 11-7 MRM Pillars to NIST AI RMF: Govern Function")
+display(create_sr117_to_nist_govern_mapping_table())
 ```
 
-**Markdown Cell:**
-This mapping demonstrates how the governance principles of SR 11-7 are foundational and extended by NIST AI RMF's 'Govern' function, which emphasizes embedding AI risk management into organizational culture and strategy.
+**Markdown Cell (Explanation for Execution):**
+This table illustrates how the governance, development, validation, and monitoring pillars of SR 11-7 all contribute to the overarching "Govern" function of NIST AI RMF. It shows that establishing a strong foundation of roles, policies, and culture is essential from the beginning of the AI lifecycle.
 
 ---
 
-### 3.17. Mapping SR 11-7 MRM to NIST AI RMF: Map & Measure Functions
+### Section 14: Mapping SR 11-7 MRM to NIST AI RMF: Map & Measure Functions
 
 **Markdown Cell:**
-### Mapping Frameworks: From Pillars to Functions (Map & Measure)
+## Mapping SR 11-7 MRM to NIST AI RMF: The "Map" & "Measure" Functions
 
-Next, we map SR 11-7 pillars to the NIST AI RMF's 'Map' and 'Measure' functions.
+Next, we map SR 11-7 pillars to the NIST AI RMF's "Map" and "Measure" functions, which are critical for identifying, analyzing, and quantifying AI risks.
 
-The **Map** function focuses on identifying, characterizing, and contextualizing AI risks. This involves understanding the AI system's purpose, design, and data, including novel AI risks like hallucinations or algorithmic bias.
+The **Map** function is about identifying contexts, threats, and vulnerabilities related to AI, while the **Measure** function focuses on quantifying risks and evaluating AI trustworthiness.
 
-The **Measure** function involves quantifying, evaluating, and tracking AI risks. This includes developing and applying appropriate risk metrics, establishing performance thresholds, and defining assurance processes. This is where concepts like $Accuracy$ and $F1-Score$ become relevant for quantifying model performance, which in turn informs risk assessments. For example, a lower $Accuracy$ or $F1-Score$ on specific subpopulations could indicate fairness risks.
-
-**Code Cell (Function Definition):**
+**Code Cell (Function Implementation):**
 ```python
-def create_sr117_nist_map_measure_mapping_table():
+def create_sr117_to_nist_map_measure_mapping_table():
     """
-    Generates a DataFrame mapping SR 11-7 pillars to NIST AI RMF 'Map' and 'Measure' functions.
+    Generates a pandas DataFrame mapping relevant SR 11-7 MRM pillars to NIST AI RMF "Map" and "Measure" functions.
     """
-    mapping_data = {
+    data = {
         "SR 11-7 MRM Pillar": [
             "Development/Implementation",
             "Validation",
@@ -575,40 +681,41 @@ def create_sr117_nist_map_measure_mapping_table():
         ],
         "Key Aspects & Best Practices": [
             "Identifying AI lifecycle risks (data quality, model bias, system integration flaws, human misuse). Creating risk taxonomies, model cards, and data cards to document purpose, training data, and limitations.",
-            "Quantifying risks through rigorous testing and validation (benchmark, scenario-based, backtesting). Developing performance metrics (e.g., Accuracy, F1-Score) and assessing trustworthiness attributes.",
+            "Quantifying risks through rigorous testing and validation (benchmark, scenario-based, backtesting). Developing performance metrics (e.g., $Accuracy$, $F1-Score$) and assessing trustworthiness attributes (e.g., fairness metrics).",
             "Establishing continuous validation processes, ongoing performance checks, and user feedback. Integrating identified risks and controls into a risk register."
         ]
     }
-    return pd.DataFrame(mapping_data)
+    df = pd.DataFrame(data)
+    return df
 ```
 
 **Code Cell (Execution):**
 ```python
-map_measure_mapping_df = create_sr117_nist_map_measure_mapping_table()
-display(map_measure_mapping_df.style.set_properties(**{'text-align': 'left'}).hide(axis='index'))
+display_markdown_text("### Mapping SR 11-7 MRM Pillars to NIST AI RMF: Map & Measure Functions")
+display(create_sr117_to_nist_map_measure_mapping_table())
 ```
 
-**Markdown Cell:**
-This table illustrates how the risk identification and quantification aspects of SR 11-7's Development, Validation, and Monitoring pillars align with the 'Map' and 'Measure' functions of NIST AI RMF, focusing on a broader scope of AI-specific risks and metrics.
+**Markdown Cell (Explanation for Execution):**
+This table demonstrates how the development, validation, and ongoing monitoring activities from SR 11-7 transition into the "Map" and "Measure" functions of NIST AI RMF. It highlights the importance of comprehensive risk identification (Map) and rigorous quantification and assessment of performance and trustworthiness (Measure) using metrics like $Accuracy$ and $F1-Score$.
 
 ---
 
-### 3.18. Mapping SR 11-7 MRM to NIST AI RMF: Manage Function
+### Section 15: Mapping SR 11-7 MRM to NIST AI RMF: Manage Function
 
 **Markdown Cell:**
-### Mapping Frameworks: From Pillars to Functions (Manage)
+## Mapping SR 11-7 MRM to NIST AI RMF: The "Manage" Function
 
-Finally, we map SR 11-7 pillars to the NIST AI RMF's 'Manage' function.
+Finally, we map SR 11-7 pillars to the NIST AI RMF's "Manage" function, which focuses on allocating resources and implementing controls to address AI risks.
 
-The **Manage** function involves allocating resources, implementing controls, and prioritizing actions to mitigate AI risks. It emphasizes continuous monitoring, adaptation, and incident response. This function is crucial for translating risk assessments into actionable mitigation strategies and ensuring human oversight in critical decisions.
+The **Manage** function involves deploying risk controls, responding to incidents, and continuously improving the AI risk management process.
 
-**Code Cell (Function Definition):**
+**Code Cell (Function Implementation):**
 ```python
-def create_sr117_nist_manage_mapping_table():
+def create_sr117_to_nist_manage_mapping_table():
     """
-    Generates a DataFrame mapping SR 11-7 pillars to NIST AI RMF 'Manage' function.
+    Generates a pandas DataFrame mapping relevant SR 11-7 MRM pillars to the NIST AI RMF "Manage" function.
     """
-    mapping_data = {
+    data = {
         "SR 11-7 MRM Pillar": [
             "Ongoing Monitoring",
             "Validation",
@@ -625,349 +732,297 @@ def create_sr117_nist_manage_mapping_table():
             "Integrating risk controls and security measures early in the AI lifecycle, including model supply chain security, access governance, and maintaining an AI Bill of Materials (AI-BOM)."
         ]
     }
-    return pd.DataFrame(mapping_data)
+    df = pd.DataFrame(data)
+    return df
 ```
 
 **Code Cell (Execution):**
 ```python
-manage_mapping_df = create_sr117_nist_manage_mapping_table()
-display(manage_mapping_df.style.set_properties(**{'text-align': 'left'}).hide(axis='index'))
+display_markdown_text("### Mapping SR 11-7 MRM Pillars to NIST AI RMF: Manage Function")
+display(create_sr117_to_nist_manage_mapping_table())
 ```
 
-**Markdown Cell:**
-This mapping demonstrates how the ongoing risk mitigation and control aspects of SR 11-7, particularly in monitoring and validation, translate into the comprehensive 'Manage' function of NIST AI RMF, with added emphasis on AI-specific controls and human-in-the-loop processes.
+**Markdown Cell (Explanation for Execution):**
+This table completes the mapping, showing how SR 11-7's emphasis on ongoing monitoring, validation, and development practices translates into the "Manage" function of NIST AI RMF. It highlights the proactive implementation of controls, continuous monitoring, and adaptive strategies needed to mitigate AI-specific threats.
 
 ---
 
-### 3.19. Framework Application to Generative & Agentic AI
+### Section 16: Framework Application to Generative & Agentic AI
 
 **Markdown Cell:**
-### Adapting Frameworks for Generative & Agentic AI
+## Framework Application to Generative & Agentic AI
 
-Generative AI (e.g., LLMs) and Agentic AI introduce significant complexities that heighten model risk beyond traditional frameworks.
+The principles of SR 11-7 and NIST AI RMF are increasingly vital for managing risks associated with advanced AI paradigms like Generative AI (e.g., LLMs) and Agentic AI systems. These systems introduce heightened complexity and unique challenges that demand adaptive governance.
 
-*   **Increased Complexity**: Generative and Agentic AI dramatically heighten model risk through their inherent complexity, uncertain inputs, and wider application domains, demanding adaptive governance and risk management strategies.
-*   **Specific Risks**: Agentic AI poses specific risks like **goal mis-specification**, **autonomy creep** (where an AI operates beyond its intended scope), and **cross-task error propagation**, which require unique oversight mechanisms.
-*   **Emergent Risks**: Emergent risks like **LLM hallucinations** and societal bias amplification necessitate tailored mitigation strategies and enhanced training data transparency. Traditional validation methods may not be sufficient.
-*   **Adaptive Governance**: Adaptive governance and **human-in-the-loop (HITL)** oversight are essential for novel AI systems, expanding risk oversight to maintain human final authority and accountability in AI decision-making.
+### Heightened Model Risk
+
+*   Generative and Agentic AI dramatically heighten model risk due to:
+    *   **Increased Complexity:** Their intricate architectures and vast parameter spaces make behavior difficult to predict.
+    *   **Uncertain Inputs:** Outputs are highly sensitive to prompts and contextual data, often leading to unpredictable responses.
+    *   **Wider Application:** Their broad utility across domains amplifies the potential for widespread impact if failures occur.
+
+### Specific Risks of Agentic AI
+
+Agentic AI systems, characterized by autonomy and sequential decision-making, pose specific risks:
+*   **Goal Mis-specification:** If an agent's objectives are poorly defined, it can pursue unintended and potentially harmful goals.
+*   **Autonomy Creep:** Agents may operate beyond their intended boundaries or without adequate human oversight.
+*   **Cross-task Error Propagation:** Errors in one step of an agent's workflow can cascade and amplify through subsequent actions, leading to significant failures.
+
+### Tailored Mitigation and Oversight
+
+*   **Emergent Risks:** LLM hallucinations and societal bias amplification necessitate tailored mitigation strategies and enhanced training data transparency.
+*   **Adaptive Governance:** Flexible governance structures are needed to keep pace with rapid AI advancements.
+*   **Human-in-the-Loop Oversight:** Essential for novel AI, expanding risk oversight to maintain human final authority and accountability, especially for critical decisions.
+*   **Red-teaming and Adversarial Testing:** Rigorous techniques like red-teaming (simulating malicious attacks) and adversarial prompt injection are crucial for identifying vulnerabilities in Generative AI.
+
+**Code Cell (Function Implementation):**
+```python
+# No specific function to implement for this conceptual section beyond display_markdown_text.
+# The focus is on definitions and conceptual explanations.
+```
+
+**Code Cell (Execution):**
+```python
+# No specific function call needed. This cell is intentionally left empty.
+```
+
+**Markdown Cell (Explanation for Execution):**
+This section discusses the application of SR 11-7 and NIST AI RMF principles to modern generative and agentic AI systems. It highlights the amplified risks and unique challenges these technologies present, emphasizing the need for adaptive governance, specialized testing (like red-teaming), and robust human oversight.
 
 ---
 
-### 3.20. Essential AI Assurance Artifacts
+### Section 17: Essential AI Assurance Artifacts: Introduction and Model Cards
 
 **Markdown Cell:**
+## Essential AI Assurance Artifacts
+
+To operationalize AI risk management and facilitate compliance with frameworks like SR 11-7 and NIST AI RMF, specific documentation artifacts are essential.
+
 ### Introduction to AI Assurance Documentation
 
-**AI Assurance Documentation** provides concrete evidence of responsible AI development and deployment practices. These artifacts are crucial for demonstrating regulatory compliance, facilitating internal/external audits, and fostering trust among stakeholders.
-
-These artifacts enhance **transparency** by capturing key facts like purpose, training data characteristics, performance metrics, known limitations, and intended use. They facilitate critical **review and auditing** processes, enabling stakeholders to critically examine AI systems. Moreover, they reinforce **accountability** by documenting identified risks, mitigation controls, and evidence of risk assessments.
+**AI Assurance Documentation** provides concrete evidence of responsible AI development and deployment practices. These artifacts enhance **transparency** by capturing key facts like purpose, training data, performance metrics, and limitations. They facilitate critical **review and auditing** processes, enabling stakeholders to critically examine AI systems.
 
 Key examples of essential documentation include:
 *   **Model Cards**
 *   **Data Cards**
 *   **Risk Registers**
 
-These artifacts are pivotal for leveraging **effective challenge** by enabling objective and informed review of AI systems.
+### Model Cards: AI Model Information Summary
 
----
+**Model Cards** provide a comprehensive summary of an AI model's key facts, enhancing transparency and accountability. They detail the model's **intended use**, guiding appropriate deployment and preventing misuse.
 
-### 3.21. Model Cards: AI Model Information Summary (Conceptual Structure)
+**Essential components typically include:**
+*   **Model Details:** Version, owner, date, intended use cases.
+*   **Training Data Characteristics:** Description of the dataset used, its sources, and any preprocessing.
+*   **Performance Metrics:** Key metrics (e.g., $Accuracy$, $F1-Score$) reported for various subgroups or conditions, highlighting potential fairness issues.
+*   **Fairness Considerations:** Discussion of bias assessments and mitigation strategies.
+*   **Known Limitations:** Specific scenarios where the model may perform poorly or fail.
+*   **Ethical Implications:** Potential societal impacts or ethical concerns.
+*   **Responsible Usage Guidelines:** Recommendations for deployment and monitoring.
 
-**Markdown Cell:**
-### Model Cards: A Comprehensive AI Model Summary
+This documentation facilitates critical review and auditing, aligning with the principles of SR 11-7's effective challenge and NIST AI RMF's transparency and accountability attributes.
 
-**Model Cards** provide a comprehensive summary of an AI model's key facts, enhancing transparency and accountability. They detail the model's intended use, guiding appropriate deployment and preventing misuse.
-
-Essential components include:
-*   **Training Data Characteristics**: Description of the dataset used for training, its size, source, and any pre-processing steps.
-*   **Performance Metrics**: Key metrics relevant to the model's task (e.g., $Accuracy$, $Precision$, $Recall$, $F1-Score$, fairness metrics) and their performance across different subgroups.
-*   **Fairness Considerations**: Discussion of identified biases and efforts made towards mitigation.
-*   **Known Limitations**: Scenarios where the model might perform poorly or be inappropriate.
-*   **Ethical Implications**: Potential societal impacts or ethical concerns.
-*   **Responsible Usage Guidelines**: Recommendations for safe and appropriate deployment.
-
-This documentation facilitates critical review and auditing, aligning with risk management frameworks like SR 11-7 and NIST AI RMF.
-
-**Code Cell (Function Definition):**
+**Code Cell (Function Implementation):**
 ```python
-def create_model_card_template():
+def create_model_card_example_fields_table():
     """
-    Returns a dictionary representing a conceptual Model Card structure.
+    Generates a pandas DataFrame illustrating example fields and components of an AI Model Card.
     """
-    model_card = {
-        "Model Name": "Conceptual AI Model for Risk Assessment",
-        "Version": "1.0",
-        "Date": "2024-07-20",
-        "Developer": "QuantUniversity AI Lab",
-        "Purpose and Intended Use": "To classify financial transactions for fraud detection.",
-        "Training Data": {
-            "Dataset Name": "Synthetic Transaction Dataset",
-            "Size": "1,000,000 records",
-            "Source": "Internal Simulation",
-            "Preprocessing": "Normalization, One-hot encoding of categorical features",
-            "Known Biases": "Potential over-representation of certain transaction types in training data."
-        },
-        "Performance Metrics": {
-            "Metric Type": "Classification Metrics",
-            "Overall Accuracy": "0.95",
-            "F1-Score (Fraud Class)": "0.88",
-            "Precision (Fraud Class)": "0.92",
-            "Recall (Fraud Class)": "0.85",
-            "Fairness Metrics": {
-                "Demographic Parity (Gender)": "0.02 (acceptable)",
-                "Equalized Odds (Age Group)": "Minor disparities identified for ages 65+"
-            }
-        },
-        "Limitations": "May struggle with novel fraud patterns; performance degrades with significant data drift.",
-        "Ethical Considerations": "Potential for false positives impacting legitimate customers, requiring human review.",
-        "Responsible Usage Guidelines": "Requires human-in-the-loop review for all high-risk flags; not for fully autonomous decision-making."
-    }
-    return model_card
-
-def display_structured_data(title, data):
-    """
-    Displays structured data (dictionary) in a formatted Markdown output.
-    """
-    md_output = f"### {title}\n\n"
-    for key, value in data.items():
-        if isinstance(value, dict):
-            md_output += f"- **{key}**:\n"
-            for sub_key, sub_value in value.items():
-                if isinstance(sub_value, dict):
-                    md_output += f"  - **{sub_key}**:\n"
-                    for sub_sub_key, sub_sub_value in sub_value.items():
-                        md_output += f"    - **{sub_sub_key}**: {sub_sub_value}\n"
-                else:
-                    md_output += f"  - **{sub_key}**: {sub_value}\n"
-        else:
-            md_output += f"- **{key}**: {value}\n"
-    display(Markdown(md_output))
-```
-
-**Code Cell (Execution):**
-```python
-model_card_template = create_model_card_template()
-display_structured_data("Conceptual Model Card Example", model_card_template)
-```
-
-**Markdown Cell:**
-This conceptual Model Card illustrates the level of detail required to provide transparency and facilitate rigorous review of AI models, encompassing technical performance, data characteristics, and ethical considerations.
-
----
-
-### 3.22. Data Cards: Documenting Dataset Provenance and Biases (Conceptual Structure)
-
-**Markdown Cell:**
-### Data Cards: Documenting Dataset Provenance and Biases
-
-**Data Cards** are essential for documenting the provenance and characteristics of datasets used in AI. They detail the data collection process and labeling methodologies, ensuring transparency.
-
-Key elements of a Data Card include:
-*   **Dataset Overview**: Name, version, description, and source.
-*   **Collection Process**: How data was collected, sampling strategies, and potential biases in collection.
-*   **Annotation/Labeling**: Methodologies used, annotator demographics, and quality control.
-*   **Composition**: Data types, demographics represented (or not represented), and sensitive attributes.
-*   **Preprocessing**: Steps taken to clean, transform, or augment the data.
-*   **Known Biases**: Identified biases in the data (e.g., representation, historical bias) and mitigation efforts.
-*   **Limitations & Maintenance**: Scenarios where the data may be inadequate, and plans for updates.
-
-Data cards facilitate the identification and documentation of potential biases within the data, crucial for responsible AI. Regulators emphasize data quality and relevance as emerging AI risks, reinforcing the importance of data cards for a comprehensive data inventory.
-
-**Code Cell (Function Definition):**
-```python
-def create_data_card_template():
-    """
-    Returns a dictionary representing a conceptual Data Card structure.
-    """
-    data_card = {
-        "Dataset Name": "Customer Loan Application Data (2020-2023)",
-        "Version": "2.1",
-        "Date": "2024-06-15",
-        "Creator": "QuantFinance Data Team",
-        "Purpose": "Training a loan default prediction model.",
-        "Data Collection": {
-            "Methodology": "Aggregated internal CRM and external credit bureau data.",
-            "Timeframe": "January 2020 - December 2023",
-            "Sampling Strategy": "Random sampling of all approved and rejected applications.",
-            "Potential Biases in Collection": "Data primarily from urban areas, potentially underrepresenting rural applicants."
-        },
-        "Composition": {
-            "Number of Records": "500,000",
-            "Number of Features": "80",
-            "Demographics Covered": "Age, Gender, Income, Zip Code (anonymized)",
-            "Missingness": "Missing income data for ~5% of records, handled via imputation."
-        },
-        "Preprocessing": {
-            "Steps": "Feature scaling, categorical encoding, outlier removal.",
-            "Anonymization": "Sensitive personal identifiers removed; PII hashed."
-        },
-        "Known Biases": "Historical lending practices may reflect existing societal biases against certain demographic groups. Gender and racial proxies are identified in some features.",
-        "Usage Guidelines": "Use only for internal loan risk assessment. Regular audits for bias are required. Do not use for automated denial without human review."
-    }
-    return data_card
-```
-
-**Code Cell (Execution):**
-```python
-data_card_template = create_data_card_template()
-display_structured_data("Conceptual Data Card Example", data_card_template)
-```
-
-**Markdown Cell:**
-This conceptual Data Card demonstrates how detailed documentation of dataset characteristics, including potential biases and collection methods, promotes transparency and enables critical assessment of the data's suitability for AI applications.
-
----
-
-### 3.23. Risk Registers: Tracking AI Hazards (Conceptual Structure)
-
-**Markdown Cell:**
-### Risk Registers: Tracking AI Hazards Throughout the Lifecycle
-
-**Risk Registers** serve as a systematic tool for tracking and managing AI-related hazards throughout their lifecycle. They document identified risks, including their **potential impact ratings** (e.g., high, medium, low) and **likelihood assessments**.
-
-Crucially, risk registers detail:
-*   **Associated Mitigation Controls**: Specific actions taken to reduce the likelihood or impact of the risk.
-*   **Response Plans**: Steps to be taken if a risk materializes.
-*   **Evidence of Risk Assessments**: Documentation supporting the risk evaluation.
-
-This ongoing documentation supports **continuous validation** and ensures **accountability** in AI risk management. Risk registers are essential for addressing AI risks across all five dimensions: data, model, system, human, and organizational.
-
-**Code Cell (Function Definition):**
-```python
-def create_risk_register_template():
-    """
-    Returns a dictionary representing a conceptual Risk Register structure.
-    """
-    risk_register = {
-        "Risk ID": "AI-FRAUD-001",
-        "AI System": "Fraud Detection Model v1.0",
-        "Date Identified": "2024-03-10",
-        "Risk Category": "Model (Algorithmic Bias, Fairness)",
-        "Description": "Model exhibits higher false positive rates for transactions originating from specific geographic regions, potentially leading to discriminatory impacts.",
-        "Potential Impact": "High (Reputational damage, regulatory fines, customer churn)",
-        "Likelihood": "Medium (Based on validation results)",
-        "Risk Score (Impact x Likelihood)": "High",
-        "Mitigation Controls": [
-            "Implement fairness-aware retraining with re-weighted samples.",
-            "Introduce post-processing bias mitigation techniques.",
-            "Establish human-in-the-loop review for flagged transactions from identified regions."
+    data = {
+        "Model Card Field": [
+            "Model Name/ID", "Version", "Owner", "Date Developed",
+            "Intended Use Cases", "Out-of-Scope Uses",
+            "Training Data Description", "Evaluation Metrics (Overall)",
+            "Fairness Metrics/Subgroup Performance", "Known Limitations",
+            "Ethical Considerations", "Deployment/Monitoring Guidelines"
         ],
-        "Control Effectiveness": "Ongoing (Expected to reduce false positives by 15%)",
-        "Response Plan": "If false positive rates exceed threshold, temporarily disable automated flagging for affected regions and revert to manual review.",
-        "Owner": "Chief Risk Officer, AI Ethics Committee",
-        "Status": "Active - Mitigation in Progress",
-        "Next Review Date": "2024-09-10"
-    }
-    return risk_register
-```
-
-**Code Cell (Execution):**
-```python
-risk_register_template = create_risk_register_template()
-display_structured_data("Conceptual AI Risk Register Entry", risk_register_template)
-```
-
-**Markdown Cell:**
-This conceptual Risk Register entry illustrates how organizations can systematically track, assess, and manage AI-related risks, ensuring transparency, accountability, and continuous improvement throughout the AI lifecycle.
-
----
-
-### 3.24. Leveraging Artifacts for Effective Challenge and Audit
-
-**Markdown Cell:**
-### Leveraging Assurance Artifacts for Effective Challenge and Audit
-
-Assurance artifacts like Model Cards, Data Cards, and Risk Registers are crucial for enabling **effective challenge** by providing objective and informed review of AI systems. They are indispensable tools for both internal and external audits.
-
-*   **Regulatory Compliance**: They provide necessary documentation for demonstrating **regulatory compliance** with frameworks like SR 11-7 and NIST AI RMF.
-*   **Transparency**: Artifacts enhance transparency by detailing model facts, data provenance, and risk profiles, thereby facilitating stakeholder scrutiny.
-*   **Accountability**: They reinforce **accountability** by documenting identified risks, mitigation controls, and evidence of risk assessments. This clarifies responsibilities and decision-making trails.
-*   **Continuous Improvement**: Comprehensive documentation supports **continuous improvement** through ongoing monitoring, validation, and feedback loops into risk registers. This ensures that learnings from audits and performance monitoring are integrated back into the AI system lifecycle.
-
-By systematically creating and maintaining these artifacts, organizations can foster a robust AI risk management ecosystem that is both resilient and trustworthy.
-
----
-
-### 3.25. Scenario-Based Question: Applying Framework Principles
-
-**Markdown Cell:**
-### Scenario-Based Question: AI Loan Application System
-
-**Scenario:**
-A financial institution develops an AI system to automate loan application approvals. During initial validation, the system shows excellent overall accuracy but a significantly lower approval rate for applicants from certain low-income zip codes, even when other financial indicators are similar to approved applicants from higher-income areas. The AI system is a complex deep learning model, and its decision-making process is not immediately interpretable.
-
-**Question for Risk Managers:**
-How would you apply principles from both SR 11-7 and NIST AI RMF to address this AI risk scenario? Specifically, consider:
-1.  What types of risks are evident, and which framework elements (pillars/functions/attributes) are most relevant?
-2.  What immediate and long-term actions would you recommend using concepts from both frameworks?
-
----
-
-**Code Cell (Function Definition):**
-```python
-def scenario_discussion_points():
-    """
-    Returns a dictionary of discussion points for the AI Loan Application System scenario.
-    """
-    discussion_points = {
-        "1. Risk Types and Relevant Framework Elements": [
-            "**Risk Type**: Algorithmic Bias (Fairness Risk), potentially due to historical data bias or model design.",
-            "**SR 11-7 Relevance**: This directly relates to the 'Validation' pillar (outcomes analysis) and 'Governance' (ethical considerations, oversight of model use). The 'Effective Challenge' principle mandates independent review to identify such disparities.",
-            "**NIST AI RMF Relevance**: Most relevant attributes are 'Fairness', 'Transparency', and 'Accountability'. The 'Map' function would identify this bias, and 'Measure' would quantify it using fairness metrics. 'Govern' would address policy and oversight."
-        ],
-        "2. Recommended Actions (Immediate & Long-Term)": [
-            "**Immediate Actions (SR 11-7 / NIST Map & Measure)**:",
-            "  - **Halt Automated Approvals**: Immediately pause fully automated approvals for affected demographics/zip codes. Revert to human-in-the-loop review for these cases.",
-            "  - **Quantify Bias**: Use fairness metrics (e.g., disparate impact, equalized odds) to precisely quantify the disparity (NIST 'Measure').",
-            "  - **Data Card Review**: Examine the Data Card for the training dataset to identify potential historical biases or underrepresentation of certain groups (NIST 'Map').",
-            "  - **Model Card Update**: Document the identified bias and its impact on performance (NIST 'Map').",
-            "**Long-Term Actions (SR 11-7 / NIST Manage & Govern)**:",
-            "  - **Root Cause Analysis**: Investigate the training data, feature engineering, and model architecture to understand the source of the bias (SR 11-7 'Development', NIST 'Map').",
-            "  - **Bias Mitigation Strategies**: Implement technical solutions like re-sampling, re-weighting, or fairness-aware algorithms (NIST 'Manage').",
-            "  - **Enhance Model Validation**: Incorporate continuous monitoring for fairness metrics and stress testing for disparate impact (SR 11-7 'Validation', NIST 'Manage').",
-            "  - **Governance & Policy Review**: Review organizational policies and ethical guidelines to ensure they explicitly address fairness in AI (SR 11-7 'Governance', NIST 'Govern').",
-            "  - **Risk Register Update**: Document the risk, mitigation plan, and ongoing monitoring (NIST 'Manage')."
+        "Example Content/Purpose": [
+            "Financial Fraud Detection Model v1.2", "1.2", "Risk Management Dept.", "2023-10-26",
+            "Detecting suspicious credit card transactions.", "Loan application scoring, customer service chatbots.",
+            "Synthetic transaction data, anonymized customer profiles (2020-2023).", "Accuracy: 95%, F1-Score: 0.88",
+            "Equal Opportunity (False Negative Rate for different demographics).", "May struggle with novel fraud patterns.",
+            "Potential for false positives impacting legitimate users; need clear appeal process.", "Continuous monitoring for drift, quarterly re-evaluation."
         ]
     }
-    return discussion_points
-
-def display_scenario_discussion(discussion):
-    """
-    Displays scenario discussion points in a formatted Markdown output.
-    """
-    md_output = "### Discussion Points:\n\n"
-    for section, points in discussion.items():
-        md_output += f"#### {section}\n"
-        for point in points:
-            md_output += f"*   {point}\n"
-        md_output += "\n"
-    display(Markdown(md_output))
+    df = pd.DataFrame(data)
+    return df
 ```
 
 **Code Cell (Execution):**
 ```python
-scenario_answers = scenario_discussion_points()
-display_scenario_discussion(scenario_answers)
+display_markdown_text("### Example Model Card Structure")
+display(create_model_card_example_fields_table())
 ```
 
-**Markdown Cell:**
-This discussion highlights how **Risk Managers** can leverage the principles and tools from both SR 11-7 and NIST AI RMF to systematically identify, assess, and mitigate complex AI risks like algorithmic bias, ensuring both regulatory compliance and ethical AI deployment.
+**Markdown Cell (Explanation for Execution):**
+The example Model Card structure above demonstrates how an AI model's essential information, including its purpose, performance, limitations, and ethical considerations, can be systematically documented. This artifact is crucial for promoting transparency, enabling effective challenge, and demonstrating accountability to stakeholders and regulators.
 
 ---
 
-### 3.26. Conclusion: AI Risk Management & Assurance Essentials
+### Section 18: Essential AI Assurance Artifacts: Data Cards
 
 **Markdown Cell:**
-### Conclusion: Key Takeaways
+## Essential AI Assurance Artifacts: Data Cards
 
-This notebook has provided a comprehensive overview of AI risk management and assurance, comparing the foundational SR 11-7 guidance with the more expansive NIST AI RMF 1.0.
+Just as Model Cards document AI models, **Data Cards** are essential for documenting the **provenance** and characteristics of datasets used in AI. They address the critical data risks identified in our taxonomy.
 
-Key takeaways include:
-*   **AI risk management is an imperative**: Modern AI, especially generative and agentic systems, amplifies traditional risks and introduces novel emergent threats that demand specialized frameworks.
-*   **SR 11-7 provides a strong foundation**: Its pillars of Development, Validation, Governance, and Ongoing Monitoring offer robust principles for model risk.
-*   **AI Risk Taxonomy**: Categorizing risks across Data, Model, System, Human, and Organizational dimensions provides a holistic view.
-*   **NIST AI RMF extends traditional MRM**: Its functions (Govern, Map, Measure, Manage) and trustworthiness attributes (Validity, Reliability, Safety, Security, Transparency, Fairness, Accountability, Privacy-Preserving) offer a comprehensive approach to AI assurance across industries.
-*   **Frameworks are complementary**: SR 11-7's principles map effectively to NIST AI RMF functions, allowing for an integrated approach to AI governance.
-*   **Assurance artifacts are essential**: Model Cards, Data Cards, and Risk Registers are critical tools for transparency, accountability, effective challenge, and continuous improvement in AI risk management.
+### Key Aspects of Data Cards
 
-By integrating these frameworks and leveraging appropriate assurance artifacts, **Risk Managers** can effectively navigate the complexities of AI, fostering trustworthiness and ensuring responsible innovation.
+*   **Data Provenance and Lineage:** They detail the data collection process, sources, and any labeling methodologies, ensuring transparency regarding where the data came from and how it was prepared. This helps trace potential issues back to their origin.
+*   **Dataset Characteristics:** Include descriptions of the data's content, features, size, and any known biases or limitations. This facilitates the identification and documentation of **potential biases** within the data, which is crucial for responsible AI.
+*   **Data Quality and Relevance:** Regulators emphasize data quality and relevance as emerging AI risks. Data Cards provide documentation to demonstrate that data used is appropriate for its intended purpose.
+*   **Data Privacy and Security:** Information on how sensitive data is handled, anonymization techniques applied, and compliance with privacy regulations (e.g., whether the data is privacy-preserving).
+
+These artifacts contribute to a comprehensive **data inventory**, making data transparent for internal stakeholders, reviewers, and auditors.
+
+**Code Cell (Function Implementation):**
+```python
+def create_data_card_example_fields_table():
+    """
+    Generates a pandas DataFrame illustrating example fields and components of an AI Data Card.
+    """
+    data = {
+        "Data Card Field": [
+            "Dataset Name/ID", "Version", "Source(s)", "Collection Method",
+            "Date Collected/Created", "Last Updated",
+            "Data Description", "Number of Samples/Features",
+            "Annotation/Labeling Process", "Known Biases/Limitations",
+            "Privacy Considerations", "Data Retention Policy"
+        ],
+        "Example Content/Purpose": [
+            "Customer Transaction History", "1.0", "Internal CRM, Third-Party Payment Processor", "Automated API pull, Manual entry",
+            "2018-01-01 to 2023-09-30", "2023-10-15",
+            "Anonymized transaction details for credit card usage.", "10M rows, 50 features",
+            "Fraudulent transactions labeled by human experts.", "Geographical bias towards urban areas; potential underrepresentation of certain demographics.",
+            "All PII anonymized; GDPR compliant.", "Data retained for 7 years as per regulatory requirements."
+        ]
+    }
+    df = pd.DataFrame(data)
+    return df
+```
+
+**Code Cell (Execution):**
+```python
+display_markdown_text("### Example Data Card Structure")
+display(create_data_card_example_fields_table())
+```
+
+**Markdown Cell (Explanation for Execution):**
+The example Data Card structure highlights the critical information required to document a dataset used in AI development. By detailing provenance, characteristics, biases, and privacy aspects, Data Cards ensure transparency and facilitate the identification and mitigation of data-related risks, aligning with responsible AI practices.
+
+---
+
+### Section 19: Essential AI Assurance Artifacts: Risk Registers
+
+**Markdown Cell:**
+## Essential AI Assurance Artifacts: Risk Registers
+
+**Risk Registers** serve as a systematic tool for tracking and managing AI-related hazards throughout their lifecycle. They are dynamic documents that evolve as risks are identified, assessed, and mitigated.
+
+### Key Components of AI Risk Registers
+
+*   **Identified Risks:** Document specific AI hazards across the data, model, system, human, and organizational dimensions.
+*   **Potential Impact Ratings:** Assess the severity of consequences if a risk materializes (e.g., Financial, Reputational, Operational, Ethical).
+*   **Likelihood Assessments:** Evaluate the probability of a risk occurring.
+*   **Mitigation Controls:** Detail associated controls, safeguards, or preventive measures implemented to reduce risk.
+*   **Response Plans:** Outline actions to be taken if a risk event occurs (e.g., incident response, rollback procedures).
+*   **Evidence of Risk Assessments:** Link to supporting documentation or analysis.
+*   **Owner and Status:** Assign responsibility for managing the risk and track its current status (e.g., Open, In Progress, Closed).
+
+This ongoing documentation supports **continuous validation** and ensures **accountability** in AI risk management, providing a clear record for internal oversight and external audits.
+
+**Code Cell (Function Implementation):**
+```python
+def create_risk_register_example_fields_table():
+    """
+    Generates a pandas DataFrame illustrating example fields and components of an AI Risk Register.
+    """
+    data = {
+        "Risk Register Field": [
+            "Risk ID", "Risk Category", "Risk Description",
+            "Potential Impact (Severity)", "Likelihood", "Risk Score (Impact x Likelihood)",
+            "Mitigation Controls", "Response Plan", "Owner", "Status", "Date Identified", "Last Review Date"
+        ],
+        "Example Content/Purpose": [
+            "AI-001", "Model (Bias)", "Algorithmic bias leading to discriminatory loan decisions.",
+            "High (Reputational, Legal, Financial)", "Medium", "High (3x2 = 6)",
+            "Fairness audit; re-weighting training data; human-in-the-loop review for high-risk applications.", "Alert risk team; pause model deployment; initiate remediation plan; notify affected parties.", "Chief Risk Officer", "In Progress", "2023-08-01", "2023-10-20"
+        ]
+    }
+    df = pd.DataFrame(data)
+    return df
+```
+
+**Code Cell (Execution):**
+```python
+display_markdown_text("### Example AI Risk Register Structure")
+display(create_risk_register_example_fields_table())
+```
+
+**Markdown Cell (Explanation for Execution):**
+The example AI Risk Register illustrates how organizations can systematically track and manage AI-related hazards. By documenting risks, their potential impact, likelihood, mitigation strategies, and ownership, risk registers provide a clear framework for proactive risk management, continuous monitoring, and demonstrating accountability across the AI lifecycle.
+
+---
+
+### Section 20: Leveraging Assurance Artifacts & Conclusion
+
+**Markdown Cell:**
+## Leveraging Assurance Artifacts for Effective Challenge and Audit & Conclusion
+
+AI assurance artifacts—Model Cards, Data Cards, and Risk Registers—are not merely documentation; they are active tools crucial for promoting **effective challenge**, ensuring **regulatory compliance**, and supporting both internal and external **audits** of AI systems.
+
+### Enhancing Transparency and Accountability
+
+*   **Effective Challenge:** These artifacts enable objective and informed review of AI systems by detailing model facts, data provenance, and risk profiles, facilitating stakeholder scrutiny.
+*   **Regulatory Compliance:** They provide necessary documentation for demonstrating adherence to regulatory mandates like SR 11-7 and voluntary frameworks like NIST AI RMF.
+*   **Transparency:** By openly detailing system components, data sources, and risk assessments, they foster greater understanding and trust.
+*   **Accountability:** They reinforce accountability by clearly documenting identified risks, mitigation controls, and evidence of risk assessments, ensuring that responsibility is assigned and traceable.
+
+### Continuous Improvement
+
+Comprehensive documentation supports **continuous improvement** through ongoing monitoring, validation, and feedback loops into risk registers. This iterative process ensures that AI risk management practices adapt and evolve with the AI systems themselves.
+
+## Conclusion
+
+This notebook has explored the foundational aspects of Model Risk Management (SR 11-7) and the comprehensive approach of the NIST AI Risk Management Framework 1.0. We've seen how traditional MRM principles are extended to address emergent AI risks, how risks are taxonomized, and how assurance artifacts are vital for building trustworthy AI.
+
+By integrating the wisdom of SR 11-7 with the forward-looking guidance of NIST AI RMF, organizations can build robust AI governance structures that foster innovation while ensuring safety, fairness, and accountability in the AI era.
+
+**Code Cell (Function Implementation):**
+```python
+def present_scenario_question(question, discussion_points):
+    """
+    Displays a scenario question and its associated discussion points in a structured format.
+    """
+    display_markdown_text(f"### Scenario: {question}")
+    display_markdown_text("**Discussion Points:**")
+    for point in discussion_points:
+        display_markdown_text(f"*   {point}")
+    display_markdown_text("---")
+
+# No specific function to implement for this conclusion beyond the scenario presentation.
+```
+
+**Code Cell (Execution):**
+```python
+scenario_q1 = "A financial institution uses an AI model for credit scoring. It performs well on overall accuracy but is found to exhibit lower approval rates for a specific demographic group, despite seemingly neutral input features."
+scenario_dp1 = [
+    "How would SR 11-7's 'Effective Challenge' principle apply here, and what type of testing would it mandate?",
+    "Which NIST AI RMF trustworthiness attributes are primarily violated in this scenario?",
+    "What AI assurance artifacts (Model Card, Data Card, Risk Register) would be most critical in identifying and addressing this issue, and what information would they contain?",
+    "Discuss potential 'Model Risks' and 'Human-Centric AI Risks' as per the AI Risk Taxonomy in this scenario."
+]
+present_scenario_question(scenario_q1, scenario_dp1)
+
+scenario_q2 = "An AI-powered chatbot designed for customer support starts generating unhelpful or factually incorrect responses, especially when queried about new product features not explicitly in its training data. This leads to customer frustration and reputational damage."
+scenario_dp2 = [
+    "How does this situation relate to 'emergent AI risks' like hallucinations and autonomy creep?",
+    "Which NIST AI RMF functions (Govern, Map, Measure, Manage) are most relevant for addressing this, and what actions would be taken in each?",
+    "What 'System Risks' might be contributing to this problem, particularly if the chatbot integrates with other systems?",
+    "How would regular 'Ongoing Monitoring' (SR 11-7) or the 'Measure' function (NIST AI RMF) detect this issue, and what metrics would be used?"
+]
+present_scenario_question(scenario_q2, scenario_dp2)
+```
+
+**Markdown Cell (Explanation for Execution):**
+The concluding section summarizes the key takeaways from the notebook, reiterating the importance of integrating traditional model risk management with contemporary AI risk frameworks. The provided scenario-based questions serve as a practical exercise for risk managers to apply the principles and concepts learned, fostering a deeper understanding of how to navigate complex AI risk challenges using both SR 11-7 and NIST AI RMF. Each discussion point encourages reflection on framework applicability, risk identification, and the utility of assurance artifacts in real-world AI scenarios.
